@@ -1,6 +1,6 @@
 package com.example.b00ks.di;
 
-import com.example.b00ks.MainActivity;
+import com.example.b00ks.view.MainActivity;
 
 import javax.inject.Singleton;
 

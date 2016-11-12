@@ -1,4 +1,4 @@
-package com.example.b00ks;
+package com.example.b00ks.di;
 
 import android.app.Application;
 
