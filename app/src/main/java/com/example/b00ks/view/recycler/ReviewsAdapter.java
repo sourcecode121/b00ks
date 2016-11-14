@@ -1,9 +1,11 @@
 package com.example.b00ks.view.recycler;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
@@ -11,6 +13,7 @@ import com.example.b00ks.model.Author;
 import com.example.b00ks.model.Book;
 import com.example.b00ks.model.Response;
 import com.example.b00ks.model.Review;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -23,10 +26,12 @@ import butterknife.ButterKnife;
 
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
+    private Context context;
     private Response response;
     private OnItemClickListener clickListener;
 
-    public ReviewsAdapter(Response response) {
+    public ReviewsAdapter(Context context, Response response) {
+        this.context = context;
         this.response = response;
     }
 
@@ -53,8 +58,13 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                 authorNames = authorNames + author.getName() + " ";
             }
         }
-
         holder.author.setText(authorNames);
+
+        Picasso.with(context)
+                .load(response.getReviews().get(position).getBook().getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .resize(220, 300)
+                .into(holder.bookImage);
     }
 
     @Override
@@ -67,6 +77,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
         @BindView(R.id.user) TextView user;
         @BindView(R.id.book_title) TextView title;
         @BindView(R.id.book_author) TextView author;
+        @BindView(R.id.book_small_image) ImageView bookImage;
 
         public ViewHolder(View itemView) {
             super(itemView);

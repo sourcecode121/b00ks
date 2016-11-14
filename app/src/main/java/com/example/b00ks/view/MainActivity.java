@@ -10,14 +10,9 @@ import android.widget.Toast;
 import com.example.b00ks.R;
 import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
-import com.example.b00ks.model.Book;
 import com.example.b00ks.model.Response;
-import com.example.b00ks.model.Review;
-import com.example.b00ks.view.recycler.ReviewsAdapter;
 import com.example.b00ks.view.recycler.OnItemClickListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.b00ks.view.recycler.ReviewsAdapter;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                     @Override
                                     public void onNext(Response response) {
                                         MainActivity.this.response = response;
-                                        reviewsAdapter = new ReviewsAdapter(response);
+                                        reviewsAdapter = new ReviewsAdapter(MainActivity.this, response);
                                     }
                                 });
     }

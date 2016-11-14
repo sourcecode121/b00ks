@@ -21,6 +21,7 @@ public class Book {
     private int id;
     private String title;
     private List<Author> authors;
+    private String image_url;
 
     public int getId() {
         return id;
@@ -46,5 +47,15 @@ public class Book {
     @ElementList(name = "authors")
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    @Element(name = "image_url")
+    public String getImageUrl() {
+        return image_url;
+    }
+
+    @Element(name = "image_url")
+    public void setImageUrl(String image_url) {
+        this.image_url = image_url;
     }
 }
