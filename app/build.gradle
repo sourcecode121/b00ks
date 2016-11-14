@@ -12,6 +12,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('env.properties').newDataInputStream())
+            def apiKey = properties.getProperty('api.key')
+            resValue "string", "api_key", apiKey
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -29,10 +35,26 @@ dependencies {
 
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.android.support:cardview-v7:25.0.0'
-    compile 'com.google.dagger:dagger:2.7'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
-    compile 'io.reactivex:rxjava:1.2.2'
-    compile 'io.reactivex:rxandroid:1.2.1'
+
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    compile 'com.google.dagger:dagger:2.7'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.7'
+
+    compile 'io.reactivex:rxjava:1.2.2'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
+    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
+
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile('com.squareup.retrofit2:converter-simplexml:2.1.0', {
+        exclude module: 'stax'
+        exclude module: 'stax-api'
+        exclude module: 'xpp3'
+    })
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.google.code.gson:gson:2.8.0'
 }

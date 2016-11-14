@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">B00KS</string>
+    <string name="api_key_string">@string/api_key</string>
 </resources>

@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
+import com.example.b00ks.model.Author;
 import com.example.b00ks.model.Book;
+import com.example.b00ks.model.Response;
+import com.example.b00ks.model.Review;
 
 import java.util.List;
 
@@ -18,13 +21,13 @@ import butterknife.ButterKnife;
  * Created by Anand on 12/11/2016.
  */
 
-public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> {
+public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
 
-    private List<Book> books;
+    private Response response;
     private OnItemClickListener clickListener;
 
-    public BooksAdapter(List<Book> books) {
-        this.books = books;
+    public ReviewsAdapter(Response response) {
+        this.response = response;
     }
 
     public void setClickListener(OnItemClickListener clickListener) {
@@ -34,24 +37,36 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.books_item, parent, false);
+                .inflate(R.layout.reviews_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(books.get(position).getTitle());
+        holder.user.setText(response.getReviews().get(position).getUser().getDisplayName());
+        holder.title.setText(response.getReviews().get(position).getBook().getTitle());
+
+        String authorNames = "";
+        List<Author> authors = response.getReviews().get(position).getBook().getAuthors();
+        if (!authors.isEmpty()) {
+            for (Author author : authors) {
+                authorNames = authorNames + author.getName() + " ";
+            }
+        }
+
+        holder.author.setText(authorNames);
     }
 
     @Override
     public int getItemCount() {
-        return books.size();
+        return response.getReviews().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.book_title)
-        TextView title;
+        @BindView(R.id.user) TextView user;
+        @BindView(R.id.book_title) TextView title;
+        @BindView(R.id.book_author) TextView author;
 
         public ViewHolder(View itemView) {
             super(itemView);

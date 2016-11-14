@@ -8,25 +8,41 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.b00ks.R;
+import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.Book;
-import com.example.b00ks.view.recycler.BooksAdapter;
+import com.example.b00ks.model.Response;
+import com.example.b00ks.model.Review;
+import com.example.b00ks.view.recycler.ReviewsAdapter;
 import com.example.b00ks.view.recycler.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener {
+
+    @Inject
+    @Named("key") String key;
+    @Inject
+    BookService bookService;
 
     @BindView(R.id.books_recycler_view)
     RecyclerView booksRecyclerView;
 
-    private List<Book> books;
+    private Subscription subscription;
+    private Response response;
     private LinearLayoutManager linearLayoutManager;
-    private BooksAdapter booksAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +53,43 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         ButterKnife.bind(this);
 
-        books = new ArrayList<>();
-        books.add(new Book("Book 1"));
-        books.add(new Book("Book 2"));
-        books.add(new Book("Book 3"));
+        subscription = bookService.getRecentReviews(key)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Subscriber<Response>() {
+                                    @Override
+                                    public void onCompleted() {
+                                        booksRecyclerView.setHasFixedSize(true);
+                                        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+                                        booksRecyclerView.setLayoutManager(linearLayoutManager);
+                                        booksRecyclerView.setAdapter(reviewsAdapter);
 
-        booksRecyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(this);
-        booksRecyclerView.setLayoutManager(linearLayoutManager);
-        booksAdapter = new BooksAdapter(books);
-        booksRecyclerView.setAdapter(booksAdapter);
+                                        reviewsAdapter.setClickListener(MainActivity.this);
+                                    }
 
-        booksAdapter.setClickListener(this);
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    @Override
+                                    public void onNext(Response response) {
+                                        MainActivity.this.response = response;
+                                        reviewsAdapter = new ReviewsAdapter(response);
+                                    }
+                                });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, books.get(position).getTitle(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, response.getReviews().get(position).getUser().getDisplayName(), Toast.LENGTH_SHORT).show();
     }
 }
