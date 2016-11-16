@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">B00KS</string>
     <string name="api_key_string">@string/api_key</string>
+    <string name="review_details_title">Review Details</string>
+    <string name="book_details_title">Book Details</string>
+    <string name="author_details_title">Author Details</string>
 </resources>

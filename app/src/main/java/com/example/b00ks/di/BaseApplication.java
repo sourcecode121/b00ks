@@ -2,10 +2,6 @@ package com.example.b00ks.di;
 
 import android.app.Application;
 
-import com.example.b00ks.di.ApplicationComponent;
-import com.example.b00ks.di.ApplicationModule;
-import com.example.b00ks.di.DaggerApplicationComponent;
-
 /**
  * Created by Anand on 12/11/2016.
  */

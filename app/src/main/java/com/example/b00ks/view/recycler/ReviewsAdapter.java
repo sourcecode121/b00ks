@@ -58,7 +58,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
                 authorNames = authorNames + author.getName() + " ";
             }
         }
-        holder.author.setText(authorNames);
+        holder.author.setText(String.format("by %s", authorNames));
 
         Picasso.with(context)
                 .load(response.getReviews().get(position).getBook().getImageUrl())

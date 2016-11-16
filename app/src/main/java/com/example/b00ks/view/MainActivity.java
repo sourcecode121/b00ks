@@ -1,5 +1,6 @@
 package com.example.b00ks.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.Response;
 import com.example.b00ks.view.recycler.OnItemClickListener;
 import com.example.b00ks.view.recycler.ReviewsAdapter;
+
+import org.parceler.Parcels;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @BindView(R.id.books_recycler_view)
     RecyclerView booksRecyclerView;
+
+    public static final String DETAILS = "details";
 
     private Subscription subscription;
     private Response response;
@@ -85,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(this, response.getReviews().get(position).getUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, response.getReviews().get(position).getUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DETAILS, Parcels.wrap(response.getReviews().get(position)));
+        startActivity(intent);
     }
 }

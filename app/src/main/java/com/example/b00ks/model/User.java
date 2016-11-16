@@ -1,5 +1,6 @@
 package com.example.b00ks.model;
 
+import org.parceler.Parcel;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
 import org.simpleframework.xml.Element;
@@ -9,12 +10,13 @@ import org.simpleframework.xml.Root;
  * Created by Anand on 14/11/2016.
  */
 
+@Parcel(Parcel.Serialization.BEAN)
 @Root(name = "user", strict = false)
 @Default(DefaultType.PROPERTY)
 public class User {
 
     private String id;
-    private String display_name;
+    private String displayName;
 
     public String getId() {
         return id;
@@ -26,11 +28,11 @@ public class User {
 
     @Element(name = "display_name")
     public String getDisplayName() {
-        return display_name;
+        return displayName;
     }
 
     @Element(name = "display_name")
-    public void setDisplayName(String display_name) {
-        this.display_name = display_name;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }
