@@ -1,5 +1,6 @@
 package com.example.b00ks.view;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.example.b00ks.R;
 import com.example.b00ks.model.Author;
 import com.example.b00ks.model.Review;
+import com.example.b00ks.util.Utility;
 
 import org.parceler.Parcels;
 
@@ -46,40 +48,42 @@ public class DetailsActivity extends AppCompatActivity {
 
         Review review = Parcels.unwrap(getIntent().getParcelableExtra(MainActivity.DETAILS));
 
-        displayName.setText(review.getUser().getDisplayName());
-        reviewRating.setText(review.getRating());
+        Resources resources = getResources();
+
+        displayName.setText(resources.getString(R.string.user_display_name, review.getUser().getDisplayName()));
+        reviewRating.setText(resources.getString(R.string.user_rating, review.getRating()));
 
         String reviewBody = review.getBody();
         if (reviewBody == null) body.setVisibility(View.GONE);
-        else body.setText(reviewBody.trim());
+        else body.setText(Utility.removeHtmlTags(resources.getString(R.string.user_review, reviewBody.trim())));
 
-        title.setText(review.getBook().getTitle());
+        title.setText(resources.getString(R.string.book_title, review.getBook().getTitle()));
 
         String bookPages = review.getBook().getNumPages();
         if (bookPages == null) numPages.setVisibility(View.GONE);
-        else numPages.setText(bookPages);
+        else numPages.setText(resources.getString(R.string.num_pages, bookPages));
 
         String bookFormat = review.getBook().getFormat();
         if (bookFormat == null) format.setVisibility(View.GONE);
-        else format.setText(bookFormat);
+        else format.setText(resources.getString(R.string.format, bookFormat));
 
         String bookPublisher = review.getBook().getPublisher();
         if (bookPublisher == null) publisher.setVisibility(View.GONE);
-        else publisher.setText(bookPublisher);
+        else publisher.setText(resources.getString(R.string.publisher, bookPublisher));
 
         String bookYear = review.getBook().getPublicationYear();
         if (bookYear == null) publicationYear.setVisibility(View.GONE);
-        else publicationYear.setText(bookYear);
+        else publicationYear.setText(resources.getString(R.string.publication_year, bookYear));
 
-        bookAverageRating.setText(review.getBook().getAverageRating());
-        bookRatingsCount.setText(review.getBook().getRatingsCount());
+        bookAverageRating.setText(resources.getString(R.string.book_average_rating, review.getBook().getAverageRating()));
+        bookRatingsCount.setText(resources.getString(R.string.book_ratings_count, review.getBook().getRatingsCount()));
 
         List<Author> authors = review.getBook().getAuthors();
         if (!authors.isEmpty()) {
             for (Author author : authors) {
-                authorName.append(String.format("%s ", author.getName()));
-                authorAverageRating.append(String.format("%s ", author.getAverageRating()));
-                authorRatingsCount.append(String.format("%s ", author.getRatingsCount()));
+                authorName.append(resources.getString(R.string.author_name, author.getName()));
+                authorAverageRating.append(resources.getString(R.string.author_average_rating, author.getAverageRating()));
+                authorRatingsCount.append(resources.getString(R.string.author_ratings_count, author.getRatingsCount()));
             }
         }
     }

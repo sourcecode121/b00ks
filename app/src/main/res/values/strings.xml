@@ -1,7 +1,23 @@
 <resources>
     <string name="app_name">B00KS</string>
     <string name="api_key_string">@string/api_key</string>
+
     <string name="review_details_title">Review Details</string>
+    <string name="user_display_name">User: %s</string>
+    <string name="user_rating">Rating: %s / 5</string>
+    <string name="user_review">Review: %s</string>
+
     <string name="book_details_title">Book Details</string>
+    <string name="book_title">Title: %s</string>
+    <string name="num_pages">Pages: %s</string>
+    <string name="format">Format: %s</string>
+    <string name="publisher">Publisher: %s</string>
+    <string name="publication_year">Year: %s</string>
+    <string name="book_average_rating">Average Rating: %s / 5</string>
+    <string name="book_ratings_count">Ratings Count: %s</string>
+
     <string name="author_details_title">Author Details</string>
+    <string name="author_name">Author: %s </string>
+    <string name="author_average_rating">Average Rating: %s / 5 </string>
+    <string name="author_ratings_count">Ratings Count: %s </string>
 </resources>
