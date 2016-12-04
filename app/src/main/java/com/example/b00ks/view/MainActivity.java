@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.b00ks.R;
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
     @BindView(R.id.books_recycler_view)
     RecyclerView booksRecyclerView;
+    @BindView(R.id.error_layout)
+    View errorLayout;
+    @BindView(R.id.error_text_view)
+    TextView errorTextView;
 
     public static final String DETAILS = "details";
 
@@ -70,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                     @Override
                                     public void onError(Throwable e) {
                                         e.printStackTrace();
+                                        errorTextView.setText(R.string.connection_issues);
+                                        booksRecyclerView.setVisibility(View.GONE);
+                                        errorLayout.setVisibility(View.VISIBLE);
                                     }
 
                                     @Override

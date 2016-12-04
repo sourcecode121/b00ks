@@ -20,4 +20,5 @@
     <string name="author_name">Author: %s </string>
     <string name="author_average_rating">Average Rating: %s / 5 </string>
     <string name="author_ratings_count">Ratings Count: %s </string>
+    <string name="connection_issues">Connection issues</string>
 </resources>
