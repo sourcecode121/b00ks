@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -58,18 +60,32 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         ButterKnife.bind(this);
 
+        connect();
+    }
+
+    @OnClick(R.id.retry_button)
+    protected void retry() {
+        connect();
+    }
+
+    private void connect() {
         subscription = bookService.getRecentReviews(key)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<Response>() {
                                     @Override
                                     public void onCompleted() {
+                                        errorLayout.setVisibility(View.GONE);
+                                        booksRecyclerView.setVisibility(View.VISIBLE);
+
                                         booksRecyclerView.setHasFixedSize(true);
                                         linearLayoutManager = new LinearLayoutManager(MainActivity.this);
                                         booksRecyclerView.setLayoutManager(linearLayoutManager);
                                         booksRecyclerView.setAdapter(reviewsAdapter);
 
                                         reviewsAdapter.setClickListener(MainActivity.this);
+
+                                        subscription.unsubscribe();
                                     }
 
                                     @Override
