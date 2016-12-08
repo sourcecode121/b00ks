@@ -2,9 +2,14 @@ package com.example.b00ks.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     View errorLayout;
     @BindView(R.id.error_text_view)
     TextView errorTextView;
+    @BindView(R.id.activity_main)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
 
     public static final String DETAILS = "details";
 
@@ -59,6 +68,10 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         ((BaseApplication) getApplication()).getComponent().inject(this);
 
         ButterKnife.bind(this);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         connect();
     }
@@ -118,5 +131,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(DETAILS, Parcels.wrap(response.getReviews().get(position)));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
