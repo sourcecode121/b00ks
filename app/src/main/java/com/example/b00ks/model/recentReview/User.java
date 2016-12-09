@@ -1,4 +1,4 @@
-package com.example.b00ks.model;
+package com.example.b00ks.model.recentReview;
 
 import org.parceler.Parcel;
 import org.simpleframework.xml.Default;

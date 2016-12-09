@@ -1,6 +1,7 @@
 package com.example.b00ks.api;
 
-import com.example.b00ks.model.Response;
+import com.example.b00ks.model.findBook.FindBookResponse;
+import com.example.b00ks.model.recentReview.RecentReviewResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,5 +14,10 @@ import rx.Observable;
 public interface BookService {
 
     @GET("review/recent_reviews.xml")
-    Observable<Response> getRecentReviews(@Query("key") String key);
+    Observable<RecentReviewResponse> getRecentReviews(@Query("key") String key);
+    @GET("search/index.xml")
+    Observable<FindBookResponse> findBooks(@Query("q") String q,
+                                           @Query("page") String page,
+                                           @Query("key") String key,
+                                           @Query("search[field]") String field);
 }

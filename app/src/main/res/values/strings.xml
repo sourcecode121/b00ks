@@ -22,4 +22,7 @@
     <string name="author_ratings_count">Ratings Count: %s </string>
     <string name="connection_issues">Connection issues</string>
     <string name="retry">Retry</string>
+    <string name="find_books">Find Books</string>
+    <string name="title_author_isbn">Title / Author / ISBN</string>
+    <string name="find">Find</string>
 </resources>

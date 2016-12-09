@@ -23,6 +23,9 @@
         <activity android:name=".view.DetailsActivity"
             android:parentActivityName=".view.MainActivity"/>
 
+        <activity android:name=".view.FindBooksActivity"
+            android:parentActivityName=".view.MainActivity"/>
+
         <meta-data android:name="api-key"
             tools:replace="android:value"
             android:value="@string/api_key_string"/>

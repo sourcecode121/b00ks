@@ -9,4 +9,6 @@ public final class Constants {
     public static class Api {
         public static final String BASE_URL = "https://www.goodreads.com/";
     }
+    public static final String PAGE = "1";
+    public static final String SEARCH_FIELD = "all";
 }

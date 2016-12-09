@@ -1,5 +1,6 @@
 package com.example.b00ks.di;
 
+import com.example.b00ks.view.FindBooksActivity;
 import com.example.b00ks.view.MainActivity;
 
 import javax.inject.Singleton;
@@ -14,4 +15,5 @@ import dagger.Component;
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
     void inject(MainActivity target);
+    void inject(FindBooksActivity target);
 }

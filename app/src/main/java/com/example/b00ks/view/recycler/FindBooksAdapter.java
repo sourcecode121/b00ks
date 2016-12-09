@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
+import com.example.b00ks.model.findBook.FindBookResponse;
 import com.example.b00ks.model.recentReview.Author;
-import com.example.b00ks.model.recentReview.RecentReviewResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,18 +19,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Anand on 12/11/2016.
+ * Created by Anand on 09/12/2016.
  */
 
-public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
+public class FindBooksAdapter extends RecyclerView.Adapter<FindBooksAdapter.ViewHolder> {
 
     private Context context;
-    private RecentReviewResponse recentReviewResponse;
+    private FindBookResponse findBookResponse;
     private OnItemClickListener clickListener;
 
-    public ReviewsAdapter(Context context, RecentReviewResponse recentReviewResponse) {
+    public FindBooksAdapter(Context context, FindBookResponse findBookResponse) {
         this.context = context;
-        this.recentReviewResponse = recentReviewResponse;
+        this.findBookResponse = findBookResponse;
     }
 
     public void setClickListener(OnItemClickListener clickListener) {
@@ -46,20 +46,12 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.user.setText(recentReviewResponse.getReviews().get(position).getUser().getDisplayName());
-        holder.title.setText(recentReviewResponse.getReviews().get(position).getBook().getTitle());
-
-        String authorNames = "";
-        List<Author> authors = recentReviewResponse.getReviews().get(position).getBook().getAuthors();
-        if (!authors.isEmpty()) {
-            for (Author author : authors) {
-                authorNames = authorNames + author.getName() + " ";
-            }
-        }
-        holder.author.setText(String.format("by %s", authorNames));
+        holder.user.setVisibility(View.GONE);
+        holder.title.setText(findBookResponse.getSearch().getResults().get(position).getBestBook().getTitle());
+        holder.author.setText(findBookResponse.getSearch().getResults().get(position).getBestBook().getAuthor().getName());
 
         Picasso.with(context)
-                .load(recentReviewResponse.getReviews().get(position).getBook().getImageUrl())
+                .load(findBookResponse.getSearch().getResults().get(position).getBestBook().getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .resize(220, 300)
                 .into(holder.bookImage);
@@ -67,7 +59,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return recentReviewResponse.getReviews().size();
+        return findBookResponse.getSearch().getResults().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

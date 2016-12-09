@@ -1,9 +1,8 @@
-package com.example.b00ks.model;
+package com.example.b00ks.model.recentReview;
 
 import org.parceler.Parcel;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 /**

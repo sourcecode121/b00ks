@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
-import com.example.b00ks.model.Author;
-import com.example.b00ks.model.Review;
+import com.example.b00ks.model.recentReview.Author;
+import com.example.b00ks.model.recentReview.Review;
 import com.example.b00ks.util.Utility;
 
 import org.parceler.Parcels;

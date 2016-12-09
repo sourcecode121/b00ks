@@ -1,4 +1,4 @@
-package com.example.b00ks.model;
+package com.example.b00ks.model.recentReview;
 
 import org.parceler.Parcel;
 import org.simpleframework.xml.Default;
@@ -8,8 +8,6 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 import java.util.List;
-
-import static android.R.attr.author;
 
 /**
  * Created by Anand on 12/11/2016.

@@ -1,4 +1,4 @@
-package com.example.b00ks.model;
+package com.example.b00ks.model.recentReview;
 
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 
 @Root(name = "GoodreadsResponse", strict = false)
-public class Response {
+public class RecentReviewResponse {
 
     private List<Review> reviews;
 

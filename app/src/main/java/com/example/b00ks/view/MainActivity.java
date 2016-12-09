@@ -2,6 +2,7 @@ package com.example.b00ks.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,14 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.b00ks.R;
 import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
-import com.example.b00ks.model.Response;
+import com.example.b00ks.model.recentReview.RecentReviewResponse;
 import com.example.b00ks.view.recycler.OnItemClickListener;
 import com.example.b00ks.view.recycler.ReviewsAdapter;
 
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     public static final String DETAILS = "details";
 
     private Subscription subscription;
-    private Response response;
+    private RecentReviewResponse recentReviewResponse;
     private LinearLayoutManager linearLayoutManager;
     private ReviewsAdapter reviewsAdapter;
 
@@ -73,7 +72,23 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        setUpNavigationDrawer();
+
         connect();
+    }
+
+    private void setUpNavigationDrawer() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_find_books:
+                        item.setChecked(true);
+                        startActivity(new Intent(MainActivity.this, FindBooksActivity.class));
+                }
+                return true;
+            }
+        });
     }
 
     @OnClick(R.id.retry_button)
@@ -85,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         subscription = bookService.getRecentReviews(key)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Subscriber<Response>() {
+                                .subscribe(new Subscriber<RecentReviewResponse>() {
                                     @Override
                                     public void onCompleted() {
                                         errorLayout.setVisibility(View.GONE);
@@ -110,26 +125,26 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                     }
 
                                     @Override
-                                    public void onNext(Response response) {
-                                        MainActivity.this.response = response;
-                                        reviewsAdapter = new ReviewsAdapter(MainActivity.this, response);
+                                    public void onNext(RecentReviewResponse recentReviewResponse) {
+                                        MainActivity.this.recentReviewResponse = recentReviewResponse;
+                                        reviewsAdapter = new ReviewsAdapter(MainActivity.this, recentReviewResponse);
                                     }
                                 });
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
+        super.onDestroy();
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        //Toast.makeText(this, response.getReviews().get(position).getUser().getDisplayName(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, recentReviewResponse.getReviews().get(position).getUser().getDisplayName(), Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(DETAILS, Parcels.wrap(response.getReviews().get(position)));
+        intent.putExtra(DETAILS, Parcels.wrap(recentReviewResponse.getReviews().get(position)));
         startActivity(intent);
     }
 
