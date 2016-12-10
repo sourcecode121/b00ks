@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
 import com.example.b00ks.model.findBook.FindBookResponse;
+import com.example.b00ks.model.findBook.Work;
 import com.example.b00ks.model.recentReview.Author;
 import com.squareup.picasso.Picasso;
 
@@ -22,44 +24,81 @@ import butterknife.ButterKnife;
  * Created by Anand on 09/12/2016.
  */
 
-public class FindBooksAdapter extends RecyclerView.Adapter<FindBooksAdapter.ViewHolder> {
+public class FindBooksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private static final int VIEW_ITEM_CONTENT = 1;
+    private static final int VIEW_ITEM_LOAD = 2;
 
     private Context context;
-    private FindBookResponse findBookResponse;
     private OnItemClickListener clickListener;
+    private boolean isLoading = false;
+    private List<Work> results;
 
-    public FindBooksAdapter(Context context, FindBookResponse findBookResponse) {
+    public FindBooksAdapter(Context context, List<Work> results) {
         this.context = context;
-        this.findBookResponse = findBookResponse;
+        this.results = results;
     }
 
     public void setClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.book_recycler_item, parent, false);
-        return new ViewHolder(v);
+    public void showProgress() {
+        isLoading = true;
+    }
+
+    public void setLoaded() {
+        isLoading = false;
+    }
+
+    public boolean loading() {
+        return isLoading;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.user.setVisibility(View.GONE);
-        holder.title.setText(findBookResponse.getSearch().getResults().get(position).getBestBook().getTitle());
-        holder.author.setText(findBookResponse.getSearch().getResults().get(position).getBestBook().getAuthor().getName());
+    public int getItemViewType(int position) {
+        return results.get(position) == null ? VIEW_ITEM_LOAD : VIEW_ITEM_CONTENT;
+    }
 
-        Picasso.with(context)
-                .load(findBookResponse.getSearch().getResults().get(position).getBestBook().getImageUrl())
-                .placeholder(R.drawable.placeholder_image)
-                .resize(220, 300)
-                .into(holder.bookImage);
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v;
+        if (viewType == VIEW_ITEM_CONTENT) {
+             v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.book_recycler_item, parent, false);
+            return new ViewHolder(v);
+        }
+        else if (viewType == VIEW_ITEM_LOAD) {
+            v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.recycler_load_more, parent, false);
+            return new LoadViewHolder(v);
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder vh, int position) {
+        if (vh instanceof ViewHolder) {
+            ViewHolder holder = (ViewHolder) vh;
+            holder.user.setVisibility(View.GONE);
+            holder.title.setText(results.get(position).getBestBook().getTitle());
+            holder.author.setText(results.get(position).getBestBook().getAuthor().getName());
+
+            Picasso.with(context)
+                    .load(results.get(position).getBestBook().getImageUrl())
+                    .placeholder(R.drawable.placeholder_image)
+                    .resize(220, 300)
+                    .into(holder.bookImage);
+        }
+        else if (vh instanceof LoadViewHolder){
+            LoadViewHolder holder = (LoadViewHolder) vh;
+            holder.loadProgressBar.setIndeterminate(true);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return findBookResponse.getSearch().getResults().size();
+        return results == null ? 0 : results.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -80,6 +119,24 @@ public class FindBooksAdapter extends RecyclerView.Adapter<FindBooksAdapter.View
             if(clickListener != null) {
                 clickListener.onItemClick(view, getAdapterPosition());
             }
+        }
+    }
+
+    public class LoadViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.load_more_progress_bar)
+        ProgressBar loadProgressBar;
+
+        public LoadViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public void addResults(List<Work> newResults) {
+        if (newResults != null) {
+            results.addAll(results.size(), newResults);
+            notifyItemRangeInserted(results.size(), newResults.size());
         }
     }
 }
