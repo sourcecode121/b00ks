@@ -2,6 +2,7 @@ package com.example.b00ks.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -84,7 +85,14 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 switch (item.getItemId()) {
                     case R.id.nav_find_books:
                         item.setChecked(true);
-                        startActivity(new Intent(MainActivity.this, FindBooksActivity.class));
+                        drawerLayout.closeDrawers();
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(MainActivity.this, FindBooksActivity.class));
+                            }
+                        }, 1000);
                 }
                 return true;
             }

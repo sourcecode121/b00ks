@@ -32,6 +32,7 @@ import rx.schedulers.Schedulers;
 
 import static com.example.b00ks.util.Constants.PAGE;
 import static com.example.b00ks.util.Constants.SEARCH_FIELD;
+import static com.example.b00ks.util.Utility.hideKeyboard;
 
 /**
  * Created by Anand on 09/12/2016.
@@ -77,6 +78,7 @@ public class FindBooksActivity extends AppCompatActivity implements OnItemClickL
             Toast.makeText(this, "Search box is empty", Toast.LENGTH_SHORT).show();
         }
         else {
+            hideKeyboard(this);
             findText = findEditText.getText().toString().trim();
             connect();
         }
