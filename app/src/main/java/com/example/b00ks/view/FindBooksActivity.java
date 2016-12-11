@@ -188,7 +188,7 @@ public class FindBooksActivity extends AppCompatActivity
                     page++;
                     connect(page);
                 }
-            }, 3000);
+            }, 2000);
         }
     }
 }

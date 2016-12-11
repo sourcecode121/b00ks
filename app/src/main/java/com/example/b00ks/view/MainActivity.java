@@ -1,8 +1,10 @@
 package com.example.b00ks.view;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -54,11 +57,15 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     NavigationView navigationView;
 
     public static final String DETAILS = "details";
+    private static final String RECYCLER_STATE = "recycler_state";
+    private static final String RECYCLER_STATE_RESPONSE = "recycler_state_response";
 
     private Subscription subscription;
-    private RecentReviewResponse recentReviewResponse;
+    private RecentReviewResponse recentReviewResponse = null;
     private LinearLayoutManager linearLayoutManager;
     private ReviewsAdapter reviewsAdapter;
+    private Parcelable recyclerState;
+    private MenuItem menuRefresh = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +77,27 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
         ButterKnife.bind(this);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_24dp);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setUpNavigationDrawer();
 
-        connect();
+        booksRecyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        booksRecyclerView.setLayoutManager(linearLayoutManager);
+
+        if (savedInstanceState == null) {
+            connect();
+        }
+        else {
+            recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
+            recentReviewResponse = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_RESPONSE));
+
+            reviewsAdapter = new ReviewsAdapter(MainActivity.this, recentReviewResponse);
+            booksRecyclerView.setAdapter(reviewsAdapter);
+            reviewsAdapter.setClickListener(MainActivity.this);
+            booksRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+        }
     }
 
     private void setUpNavigationDrawer() {
@@ -113,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                     public void onCompleted() {
                                         errorLayout.setVisibility(View.GONE);
                                         booksRecyclerView.setVisibility(View.VISIBLE);
+                                        if (menuRefresh != null) {
+                                            menuRefresh.getIcon().setTint(Color.WHITE);
+                                            menuRefresh.setEnabled(true);
+                                        }
 
-                                        booksRecyclerView.setHasFixedSize(true);
-                                        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
-                                        booksRecyclerView.setLayoutManager(linearLayoutManager);
                                         booksRecyclerView.setAdapter(reviewsAdapter);
-
                                         reviewsAdapter.setClickListener(MainActivity.this);
 
                                         subscription.unsubscribe();
@@ -157,12 +179,42 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.menu_refresh:
+                menuRefresh = item;
+                item.getIcon().setTint(Color.GRAY);
+                item.setEnabled(false);
+                refreshRecycler();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refreshRecycler() {
+        if (recentReviewResponse != null) {
+            recentReviewResponse.getReviews().clear();
+        }
+        booksRecyclerView.removeAllViews();
+        linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        booksRecyclerView.setLayoutManager(linearLayoutManager);
+        connect();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        recyclerState = booksRecyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(RECYCLER_STATE, recyclerState);
+        outState.putParcelable(RECYCLER_STATE_RESPONSE, Parcels.wrap(recentReviewResponse));
+        super.onSaveInstanceState(outState);
     }
 }
