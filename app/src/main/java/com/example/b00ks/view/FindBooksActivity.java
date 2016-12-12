@@ -182,9 +182,6 @@ public class FindBooksActivity extends AppCompatActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    results.remove(results.size() - 1);
-                    findBooksAdapter.notifyItemRemoved(results.size());
-
                     page++;
                     connect(page);
                 }

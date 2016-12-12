@@ -2,6 +2,7 @@ package com.example.b00ks.view;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -192,7 +193,13 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 return true;
             case R.id.menu_refresh:
                 menuRefresh = item;
-                item.getIcon().setTint(Color.GRAY);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    item.getIcon().setTint(getResources().getColor(R.color.colorAccent, null));
+                }
+                else {
+                    //noinspection deprecation
+                    item.getIcon().setTint(getResources().getColor(R.color.colorAccent));
+                }
                 item.setEnabled(false);
                 refreshRecycler();
                 return true;

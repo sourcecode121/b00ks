@@ -134,9 +134,12 @@ public class FindBooksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void addResults(List<Work> newResults) {
+        results.remove(results.size() - 1);
+        notifyItemRemoved(results.size());
         if (newResults != null) {
-            results.addAll(results.size(), newResults);
-            notifyItemRangeInserted(results.size(), newResults.size());
+            int s = results.size();
+            results.addAll(s, newResults);
+            notifyDataSetChanged();
         }
     }
 }
