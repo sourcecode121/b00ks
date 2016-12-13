@@ -30,6 +30,8 @@
 
     </LinearLayout>
 
+    <include layout="@layout/progress_screen"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/find_recycler_view"
         android:layout_width="match_parent"

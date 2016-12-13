@@ -2,6 +2,7 @@ package com.example.b00ks.view;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.example.b00ks.R;
 import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.findBook.FindBookResponse;
+import com.example.b00ks.model.findBook.SearchResult;
 import com.example.b00ks.model.findBook.Work;
 import com.example.b00ks.model.recentReview.RecentReviewResponse;
 import com.example.b00ks.model.recentReview.User;
@@ -24,6 +26,8 @@ import com.example.b00ks.view.recycler.OnItemClickListener;
 import com.example.b00ks.view.recycler.OnLoadMoreListener;
 import com.example.b00ks.view.recycler.RecyclerScrollListener;
 import com.example.b00ks.view.recycler.ReviewsAdapter;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +70,13 @@ public class FindBooksActivity extends AppCompatActivity
     View findContainer;
     @BindView(R.id.find_edit_text)
     TextInputEditText findEditText;
+    @BindView(R.id.progress_layout)
+    View progressLayout;
 
+    private static final String RECYCLER_STATE = "recycler_state";
+    private static final String RECYCLER_STATE_LIST = "recycler_state_list";
+    private static final String RECYCLER_STATE_PAGE = "recycler_state_page";
+    private static final String RECYCLER_STATE_FIND_TEXT = "recycler_state_find_text";
     private static int page = PAGE;
 
     private Subscription subscription;
@@ -74,6 +84,8 @@ public class FindBooksActivity extends AppCompatActivity
     private LinearLayoutManager linearLayoutManager;
     private FindBooksAdapter findBooksAdapter;
     private RecyclerScrollListener scrollListener;
+    private Parcelable recyclerState;
+    private SearchResult searchResult;
     private String findText;
 
     @Override
@@ -85,6 +97,7 @@ public class FindBooksActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
+        searchResult = new SearchResult();
         results = new ArrayList<>();
 
         findRecyclerView.setHasFixedSize(true);
@@ -92,6 +105,19 @@ public class FindBooksActivity extends AppCompatActivity
         scrollListener = new RecyclerScrollListener(linearLayoutManager, FindBooksActivity.this);
         findRecyclerView.setLayoutManager(linearLayoutManager);
         findRecyclerView.addOnScrollListener(scrollListener);
+
+        if (savedInstanceState != null) {
+            page = savedInstanceState.getInt(RECYCLER_STATE_PAGE);
+            findText = savedInstanceState.getString(RECYCLER_STATE_FIND_TEXT);
+            recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
+            searchResult = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_LIST));
+            results = searchResult.getResults();
+
+            findBooksAdapter = new FindBooksAdapter(FindBooksActivity.this, results);
+            findBooksAdapter.setClickListener(FindBooksActivity.this);
+            findRecyclerView.setAdapter(findBooksAdapter);
+            findRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+        }
     }
 
     @OnClick(R.id.find_button)
@@ -105,12 +131,14 @@ public class FindBooksActivity extends AppCompatActivity
             findRecyclerView.removeAllViews();
             findText = findEditText.getText().toString().trim();
             page = PAGE;
+            showProgressLayout();
             connect(page);
         }
     }
 
     @OnClick(R.id.retry_button)
     protected void retry() {
+        showProgressLayout();
         connect(page);
     }
 
@@ -121,9 +149,11 @@ public class FindBooksActivity extends AppCompatActivity
                 .subscribe(new Subscriber<FindBookResponse>() {
                     @Override
                     public void onCompleted() {
+                        progressLayout.setVisibility(View.GONE);
                         errorLayout.setVisibility(View.GONE);
                         findContainer.setVisibility(View.VISIBLE);
                         findRecyclerView.setVisibility(View.VISIBLE);
+                        findRecyclerView.requestFocus();
 
                         if (!findBooksAdapter.loading()) {
                             findRecyclerView.setAdapter(findBooksAdapter);
@@ -139,8 +169,9 @@ public class FindBooksActivity extends AppCompatActivity
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         errorTextView.setText(R.string.connection_issues);
-                        findContainer.setVisibility(View.GONE);
+                        progressLayout.setVisibility(View.GONE);
                         findRecyclerView.setVisibility(View.GONE);
+                        findContainer.setVisibility(View.VISIBLE);
                         errorLayout.setVisibility(View.VISIBLE);
                     }
 
@@ -156,6 +187,13 @@ public class FindBooksActivity extends AppCompatActivity
                         }
                     }
                 });
+    }
+
+    private void showProgressLayout() {
+        errorLayout.setVisibility(View.GONE);
+        findContainer.setVisibility(View.GONE);
+        findRecyclerView.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -187,5 +225,16 @@ public class FindBooksActivity extends AppCompatActivity
                 }
             }, 2000);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        recyclerState = findRecyclerView.getLayoutManager().onSaveInstanceState();
+        searchResult.setResults(results);
+        outState.putParcelable(RECYCLER_STATE, recyclerState);
+        outState.putParcelable(RECYCLER_STATE_LIST, Parcels.wrap(searchResult));
+        outState.putInt(RECYCLER_STATE_PAGE, page);
+        outState.putString(RECYCLER_STATE_FIND_TEXT, findText);
+        super.onSaveInstanceState(outState);
     }
 }

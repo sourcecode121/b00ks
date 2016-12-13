@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
@@ -56,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     DrawerLayout drawerLayout;
     @BindView(R.id.nav_view)
     NavigationView navigationView;
+    @BindView(R.id.progress_layout)
+    View progressLayout;
 
     public static final String DETAILS = "details";
     private static final String RECYCLER_STATE = "recycler_state";
@@ -128,12 +131,16 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     }
 
     private void connect() {
+        errorLayout.setVisibility(View.GONE);
+        booksRecyclerView.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.VISIBLE);
         subscription = bookService.getRecentReviews(key)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Subscriber<RecentReviewResponse>() {
                                     @Override
                                     public void onCompleted() {
+                                        progressLayout.setVisibility(View.GONE);
                                         errorLayout.setVisibility(View.GONE);
                                         booksRecyclerView.setVisibility(View.VISIBLE);
                                         if (menuRefresh != null) {
@@ -151,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                                     public void onError(Throwable e) {
                                         e.printStackTrace();
                                         errorTextView.setText(R.string.connection_issues);
+                                        progressLayout.setVisibility(View.GONE);
                                         booksRecyclerView.setVisibility(View.GONE);
                                         errorLayout.setVisibility(View.VISIBLE);
                                     }
