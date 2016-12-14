@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     NavigationView navigationView;
     @BindView(R.id.progress_layout)
     View progressLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     public static final String DETAILS = "details";
     private static final String RECYCLER_STATE = "recycler_state";
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
 
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_24dp);
         actionBar.setDisplayHomeAsUpEnabled(true);

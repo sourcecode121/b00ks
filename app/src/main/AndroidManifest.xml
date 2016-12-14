@@ -22,10 +22,12 @@
         </activity>
 
         <activity android:name=".view.DetailsActivity"
-            android:parentActivityName=".view.MainActivity"/>
+            android:parentActivityName=".view.MainActivity"
+            android:theme="@style/DefaultAppTheme"/>
 
         <activity android:name=".view.FindBooksActivity"
-            android:parentActivityName=".view.MainActivity"/>
+            android:parentActivityName=".view.MainActivity"
+            android:theme="@style/DefaultAppTheme"/>
 
         <meta-data android:name="api-key"
             tools:replace="android:value"
