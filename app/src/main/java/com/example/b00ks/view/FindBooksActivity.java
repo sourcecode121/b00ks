@@ -1,5 +1,6 @@
 package com.example.b00ks.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -73,6 +74,7 @@ public class FindBooksActivity extends AppCompatActivity
     @BindView(R.id.progress_layout)
     View progressLayout;
 
+    public static final String BOOK_DETAILS = "book_details";
     private static final String RECYCLER_STATE = "recycler_state";
     private static final String RECYCLER_STATE_LIST = "recycler_state_list";
     private static final String RECYCLER_STATE_PAGE = "recycler_state_page";
@@ -206,7 +208,9 @@ public class FindBooksActivity extends AppCompatActivity
 
     @Override
     public void onItemClick(View view, int position) {
-
+        Intent intent = new Intent(this, BookDetailsActivity.class);
+        intent.putExtra(BOOK_DETAILS, Parcels.wrap(results.get(position)));
+        startActivity(intent);
     }
 
     @Override
