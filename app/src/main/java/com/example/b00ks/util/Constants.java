@@ -11,4 +11,6 @@ public final class Constants {
     }
     public static final int PAGE = 1;
     public static final String SEARCH_FIELD = "all";
+    public static final String[] MONTHS = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 }

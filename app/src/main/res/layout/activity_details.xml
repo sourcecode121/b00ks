@@ -1,112 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/review_details"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="@string/review_details_title"/>
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:id="@+id/review_details_display_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/review_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/review_details_title"/>
 
-    <TextView
-        android:id="@+id/review_details_rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/review_details_display_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/review_details_body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/review_details_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"
-        android:textStyle="bold"
-        android:text="@string/book_details_title"/>
+        <TextView
+            android:id="@+id/review_details_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"
+            android:textStyle="bold"
+            android:text="@string/book_details_title"/>
 
-    <TextView
-        android:id="@+id/book_details_num_pages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_format"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_num_pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_publisher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_format"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_publication_year"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_publisher"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_average_rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_publication_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/book_details_ratings_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/book_details_average_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/author_details"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"
-        android:textStyle="bold"
-        android:text="@string/author_details_title"/>
+        <TextView
+            android:id="@+id/book_details_ratings_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/author_details_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/author_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"
+            android:textStyle="bold"
+            android:text="@string/author_details_title"/>
 
-    <TextView
-        android:id="@+id/author_details_average_rating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/author_details_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-    <TextView
-        android:id="@+id/author_details_ratings_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/details_margin"/>
+        <TextView
+            android:id="@+id/author_details_average_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/author_details_ratings_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
+
+    </LinearLayout>
+</ScrollView>
