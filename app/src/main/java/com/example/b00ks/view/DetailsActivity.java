@@ -11,6 +11,7 @@ import com.example.b00ks.R;
 import com.example.b00ks.model.recentReview.Author;
 import com.example.b00ks.model.recentReview.Review;
 import com.example.b00ks.util.Utility;
+import com.example.b00ks.view.fragments.RecentReviews;
 
 import org.parceler.Parcels;
 
@@ -46,7 +47,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Review review = Parcels.unwrap(getIntent().getParcelableExtra(MainActivity.DETAILS));
+        Review review = Parcels.unwrap(getIntent().getParcelableExtra(RecentReviews.DETAILS));
 
         Resources resources = getResources();
 
