@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.b00ks.R;
 import com.example.b00ks.model.findBook.Work;
+import com.example.b00ks.view.fragments.FindBooks;
 
 import org.parceler.Parcels;
 
@@ -43,7 +44,7 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        Work work = Parcels.unwrap(getIntent().getParcelableExtra(FindBooksActivity.BOOK_DETAILS));
+        Work work = Parcels.unwrap(getIntent().getParcelableExtra(FindBooks.BOOK_DETAILS));
 
         Resources resources = getResources();
 

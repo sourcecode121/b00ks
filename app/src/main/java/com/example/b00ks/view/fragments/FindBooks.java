@@ -1,16 +1,18 @@
-package com.example.b00ks.view;
+package com.example.b00ks.view.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,13 +22,11 @@ import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.findBook.FindBookResponse;
 import com.example.b00ks.model.findBook.SearchResult;
 import com.example.b00ks.model.findBook.Work;
-import com.example.b00ks.model.recentReview.RecentReviewResponse;
-import com.example.b00ks.model.recentReview.User;
+import com.example.b00ks.view.BookDetailsActivity;
 import com.example.b00ks.view.recycler.FindBooksAdapter;
 import com.example.b00ks.view.recycler.OnItemClickListener;
 import com.example.b00ks.view.recycler.OnLoadMoreListener;
 import com.example.b00ks.view.recycler.RecyclerScrollListener;
-import com.example.b00ks.view.recycler.ReviewsAdapter;
 
 import org.parceler.Parcels;
 
@@ -44,16 +44,16 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.example.b00ks.R.string.find;
 import static com.example.b00ks.util.Constants.PAGE;
 import static com.example.b00ks.util.Constants.SEARCH_FIELD;
 import static com.example.b00ks.util.Utility.hideKeyboard;
+import static com.example.b00ks.util.Utility.showKeyboard;
 
 /**
- * Created by Anand on 09/12/2016.
+ * Created by Anand on 20/12/2016.
  */
 
-public class FindBooksActivity extends AppCompatActivity
+public class FindBooks extends Fragment
         implements OnItemClickListener, OnLoadMoreListener {
 
     @Inject
@@ -79,8 +79,10 @@ public class FindBooksActivity extends AppCompatActivity
     private static final String RECYCLER_STATE_LIST = "recycler_state_list";
     private static final String RECYCLER_STATE_PAGE = "recycler_state_page";
     private static final String RECYCLER_STATE_FIND_TEXT = "recycler_state_find_text";
+    private static final String IS_LISTENER_ATTACHED = "is_listener_attached";
     private static int page = PAGE;
 
+    private Context context;
     private Subscription subscription;
     private List<Work> results;
     private LinearLayoutManager linearLayoutManager;
@@ -89,46 +91,70 @@ public class FindBooksActivity extends AppCompatActivity
     private Parcelable recyclerState;
     private SearchResult searchResult;
     private String findText;
+    private boolean isListenerAttached = false;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_find_books);
 
-        ((BaseApplication) getApplication()).getComponent().inject(this);
+        ((BaseApplication) getActivity().getApplication()).getComponent().inject(this);
+    }
 
-        ButterKnife.bind(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_find_books, container, false);
+        ButterKnife.bind(this, v);
+        return v;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         searchResult = new SearchResult();
         results = new ArrayList<>();
 
         findRecyclerView.setHasFixedSize(true);
-        linearLayoutManager = new LinearLayoutManager(FindBooksActivity.this);
-        scrollListener = new RecyclerScrollListener(linearLayoutManager, FindBooksActivity.this);
+        linearLayoutManager = new LinearLayoutManager(context);
+        scrollListener = new RecyclerScrollListener(linearLayoutManager, FindBooks.this);
         findRecyclerView.setLayoutManager(linearLayoutManager);
-        findRecyclerView.addOnScrollListener(scrollListener);
 
         if (savedInstanceState != null) {
             page = savedInstanceState.getInt(RECYCLER_STATE_PAGE);
             findText = savedInstanceState.getString(RECYCLER_STATE_FIND_TEXT);
             recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
+            isListenerAttached = savedInstanceState.getBoolean(IS_LISTENER_ATTACHED);
             searchResult = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_LIST));
             results = searchResult.getResults();
 
-            findBooksAdapter = new FindBooksAdapter(FindBooksActivity.this, results);
-            findBooksAdapter.setClickListener(FindBooksActivity.this);
+            findBooksAdapter = new FindBooksAdapter(context, results);
+            findBooksAdapter.setClickListener(FindBooks.this);
             findRecyclerView.setAdapter(findBooksAdapter);
             findRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+            if (isListenerAttached) {
+                findRecyclerView.addOnScrollListener(scrollListener);
+            }
+        }
+        else {
+            findEditText.requestFocus();
+            showKeyboard(getActivity());
         }
     }
 
     @OnClick(R.id.find_button)
     protected void findButtonClick() {
         if (findEditText.getText() == null || findEditText.getText().toString().trim().equals("")) {
-            Toast.makeText(this, "Search box is empty", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Search box is empty", Toast.LENGTH_SHORT).show();
         }
         else {
-            hideKeyboard(this);
+            hideKeyboard(getActivity());
             results.clear();
             findRecyclerView.removeAllViews();
             findText = findEditText.getText().toString().trim();
@@ -145,6 +171,10 @@ public class FindBooksActivity extends AppCompatActivity
     }
 
     private void connect(int page) {
+        if (!isListenerAttached) {
+            findRecyclerView.addOnScrollListener(scrollListener);
+            isListenerAttached = true;
+        }
         subscription = bookService.findBooks(findText, String.valueOf(page), key, SEARCH_FIELD)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -179,10 +209,14 @@ public class FindBooksActivity extends AppCompatActivity
 
                     @Override
                     public void onNext(FindBookResponse findBookResponse) {
+                        if (findBookResponse.getSearch().getResults().size() < 20) {
+                            findRecyclerView.clearOnScrollListeners();
+                            isListenerAttached = false;
+                        }
                         if (results.isEmpty()) {
                             results = findBookResponse.getSearch().getResults();
-                            findBooksAdapter = new FindBooksAdapter(FindBooksActivity.this, results);
-                            findBooksAdapter.setClickListener(FindBooksActivity.this);
+                            findBooksAdapter = new FindBooksAdapter(context, results);
+                            findBooksAdapter.setClickListener(FindBooks.this);
                         }
                         else {
                             findBooksAdapter.addResults(findBookResponse.getSearch().getResults());
@@ -199,16 +233,16 @@ public class FindBooksActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroyView() {
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
-        super.onDestroy();
+        super.onDestroyView();
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent intent = new Intent(this, BookDetailsActivity.class);
+        Intent intent = new Intent(context, BookDetailsActivity.class);
         intent.putExtra(BOOK_DETAILS, Parcels.wrap(results.get(position)));
         startActivity(intent);
     }
@@ -232,13 +266,14 @@ public class FindBooksActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         recyclerState = findRecyclerView.getLayoutManager().onSaveInstanceState();
         searchResult.setResults(results);
         outState.putParcelable(RECYCLER_STATE, recyclerState);
         outState.putParcelable(RECYCLER_STATE_LIST, Parcels.wrap(searchResult));
         outState.putInt(RECYCLER_STATE_PAGE, page);
         outState.putString(RECYCLER_STATE_FIND_TEXT, findText);
+        outState.putBoolean(IS_LISTENER_ATTACHED, isListenerAttached);
         super.onSaveInstanceState(outState);
     }
 }

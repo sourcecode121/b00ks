@@ -25,13 +25,8 @@
             android:parentActivityName=".view.MainActivity"
             android:theme="@style/DefaultAppTheme"/>
 
-        <activity android:name=".view.FindBooksActivity"
-            android:parentActivityName=".view.MainActivity"
-            android:theme="@style/DefaultAppTheme"
-            android:launchMode="singleTop"/>
-
         <activity android:name=".view.BookDetailsActivity"
-            android:parentActivityName=".view.FindBooksActivity"
+            android:parentActivityName=".view.MainActivity"
             android:theme="@style/DefaultAppTheme"/>
 
         <meta-data android:name="api-key"
