@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_find_books"
-        android:title="@string/find_books"/>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_recent_reviews"
+            android:checked="true"
+            android:title="@string/recent_reviews"/>
+        <item
+            android:id="@+id/nav_find_books"
+            android:title="@string/find_books"/>
+    </group>
 </menu>

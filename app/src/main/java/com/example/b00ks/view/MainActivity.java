@@ -18,6 +18,8 @@ import com.example.b00ks.view.fragments.RecentReviews;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.b00ks.util.Utility.hideKeyboard;
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.activity_main)
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setUpNavigationDrawer();
 
         if (savedInstanceState == null) {
-            RecentReviews recentReviews = new RecentReviews();
+            RecentReviews recentReviews =  new RecentReviews();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, recentReviews)
                     .commit();
@@ -53,20 +55,31 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_find_books:
-                        item.setChecked(true);
-                        drawerLayout.closeDrawers();
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                FindBooks findBooks = new FindBooks();
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, findBooks)
-                                        .commit();
-                            }
-                        }, 1000);
+                if (item.isChecked()) {
+                    drawerLayout.closeDrawers();
+                }
+                else {
+                    item.setChecked(true);
+                    drawerLayout.closeDrawers();
+                    switch (item.getItemId()) {
+                        case R.id.nav_recent_reviews:
+                            RecentReviews recentReviews = new RecentReviews();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, recentReviews)
+                                    .commit();
+                            break;
+                        case R.id.nav_find_books:
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    FindBooks findBooks = new FindBooks();
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fragment_container, findBooks)
+                                            .commit();
+                                }
+                            }, 1000);
+                            break;
+                    }
                 }
                 return true;
             }
@@ -77,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                hideKeyboard(this);
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }

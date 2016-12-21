@@ -28,4 +28,5 @@
     <string name="title_author_isbn">Title / Author / ISBN</string>
     <string name="find">Find</string>
     <string name="refresh">Refresh</string>
+    <string name="recent_reviews">Recent Reviews</string>
 </resources>
