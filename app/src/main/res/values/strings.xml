@@ -29,4 +29,5 @@
     <string name="find">Find</string>
     <string name="refresh">Refresh</string>
     <string name="recent_reviews">Recent Reviews</string>
+    <string name="no_search_results">No Search Results</string>
 </resources>

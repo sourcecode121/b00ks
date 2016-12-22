@@ -54,14 +54,13 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     RecyclerView booksRecyclerView;
     @BindView(R.id.error_layout)
     View errorLayout;
-    @BindView(R.id.error_text_view)
-    TextView errorTextView;
     @BindView(R.id.progress_layout)
     View progressLayout;
 
     public static final String DETAILS = "details";
     private static final String RECYCLER_STATE = "recycler_state";
     private static final String RECYCLER_STATE_RESPONSE = "recycler_state_response";
+    private static final String SCREEN_STATE = "screen_state";
 
     private Context context;
     private Subscription subscription;
@@ -69,6 +68,7 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     private LinearLayoutManager linearLayoutManager;
     private ReviewsAdapter reviewsAdapter;
     private Parcelable recyclerState;
+    private int[] screenState;
     private MenuItem menuRefresh = null;
 
     @Override
@@ -101,17 +101,28 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
         linearLayoutManager = new LinearLayoutManager(context);
         booksRecyclerView.setLayoutManager(linearLayoutManager);
 
-        if (savedInstanceState == null) {
-            connect();
+        if (savedInstanceState != null && (screenState = savedInstanceState.getIntArray(SCREEN_STATE)) != null) {
+
+            if (screenState[0] == View.VISIBLE) {
+                connect();
+            }
+            else {
+                booksRecyclerView.setVisibility(screenState[1]);
+                errorLayout.setVisibility(screenState[2]);
+
+                if (screenState[1] == View.VISIBLE) {
+                    recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
+                    recentReviewResponse = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_RESPONSE));
+
+                    reviewsAdapter = new ReviewsAdapter(context, recentReviewResponse);
+                    booksRecyclerView.setAdapter(reviewsAdapter);
+                    reviewsAdapter.setClickListener(RecentReviews.this);
+                    booksRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+                }
+            }
         }
         else {
-            recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
-            recentReviewResponse = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_RESPONSE));
-
-            reviewsAdapter = new ReviewsAdapter(context, recentReviewResponse);
-            booksRecyclerView.setAdapter(reviewsAdapter);
-            reviewsAdapter.setClickListener(RecentReviews.this);
-            booksRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+            connect();
         }
     }
 
@@ -147,7 +158,6 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        errorTextView.setText(R.string.connection_issues);
                         progressLayout.setVisibility(View.GONE);
                         booksRecyclerView.setVisibility(View.GONE);
                         errorLayout.setVisibility(View.VISIBLE);
@@ -213,8 +223,15 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         recyclerState = booksRecyclerView.getLayoutManager().onSaveInstanceState();
+        screenState = new int[] {
+                progressLayout.getVisibility(),
+                booksRecyclerView.getVisibility(),
+                errorLayout.getVisibility()
+        };
+
         outState.putParcelable(RECYCLER_STATE, recyclerState);
         outState.putParcelable(RECYCLER_STATE_RESPONSE, Parcels.wrap(recentReviewResponse));
+        outState.putIntArray(SCREEN_STATE, screenState);
         super.onSaveInstanceState(outState);
     }
 }

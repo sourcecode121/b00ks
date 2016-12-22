@@ -65,14 +65,14 @@ public class FindBooks extends Fragment
     RecyclerView findRecyclerView;
     @BindView(R.id.error_layout)
     View errorLayout;
-    @BindView(R.id.error_text_view)
-    TextView errorTextView;
     @BindView(R.id.find_container)
     View findContainer;
     @BindView(R.id.find_edit_text)
     TextInputEditText findEditText;
     @BindView(R.id.progress_layout)
     View progressLayout;
+    @BindView(R.id.default_layout)
+    View defaultLayout;
 
     public static final String BOOK_DETAILS = "book_details";
     private static final String RECYCLER_STATE = "recycler_state";
@@ -80,6 +80,7 @@ public class FindBooks extends Fragment
     private static final String RECYCLER_STATE_PAGE = "recycler_state_page";
     private static final String RECYCLER_STATE_FIND_TEXT = "recycler_state_find_text";
     private static final String IS_LISTENER_ATTACHED = "is_listener_attached";
+    private static final String SCREEN_STATE = "screen_state";
     private static int page = PAGE;
 
     private Context context;
@@ -91,6 +92,7 @@ public class FindBooks extends Fragment
     private Parcelable recyclerState;
     private SearchResult searchResult;
     private String findText;
+    private int[] screenState;
     private boolean isListenerAttached = false;
 
     @Override
@@ -126,20 +128,34 @@ public class FindBooks extends Fragment
         scrollListener = new RecyclerScrollListener(linearLayoutManager, FindBooks.this);
         findRecyclerView.setLayoutManager(linearLayoutManager);
 
-        if (savedInstanceState != null) {
-            page = savedInstanceState.getInt(RECYCLER_STATE_PAGE);
-            findText = savedInstanceState.getString(RECYCLER_STATE_FIND_TEXT);
-            recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
-            isListenerAttached = savedInstanceState.getBoolean(IS_LISTENER_ATTACHED);
-            searchResult = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_LIST));
-            results = searchResult.getResults();
+        if (savedInstanceState != null && (screenState = savedInstanceState.getIntArray(SCREEN_STATE)) != null) {
 
-            findBooksAdapter = new FindBooksAdapter(context, results);
-            findBooksAdapter.setClickListener(FindBooks.this);
-            findRecyclerView.setAdapter(findBooksAdapter);
-            findRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
-            if (isListenerAttached) {
-                findRecyclerView.addOnScrollListener(scrollListener);
+            findText = savedInstanceState.getString(RECYCLER_STATE_FIND_TEXT);
+
+            if (screenState[2] == View.VISIBLE) {
+                page = PAGE;
+                showProgressLayout();
+                connect(page);
+            }
+            else {
+                findContainer.setVisibility(screenState[0]);
+                defaultLayout.setVisibility(screenState[1]);
+                findRecyclerView.setVisibility(screenState[3]);
+                errorLayout.setVisibility(screenState[4]);
+
+                page = savedInstanceState.getInt(RECYCLER_STATE_PAGE);
+                recyclerState = savedInstanceState.getParcelable(RECYCLER_STATE);
+                isListenerAttached = savedInstanceState.getBoolean(IS_LISTENER_ATTACHED);
+                searchResult = Parcels.unwrap(savedInstanceState.getParcelable(RECYCLER_STATE_LIST));
+                results = searchResult.getResults();
+
+                findBooksAdapter = new FindBooksAdapter(context, results);
+                findBooksAdapter.setClickListener(FindBooks.this);
+                findRecyclerView.setAdapter(findBooksAdapter);
+                findRecyclerView.getLayoutManager().onRestoreInstanceState(recyclerState);
+                if (isListenerAttached) {
+                    findRecyclerView.addOnScrollListener(scrollListener);
+                }
             }
         }
         else {
@@ -181,12 +197,21 @@ public class FindBooks extends Fragment
                 .subscribe(new Subscriber<FindBookResponse>() {
                     @Override
                     public void onCompleted() {
+                        // Screen state
                         progressLayout.setVisibility(View.GONE);
                         errorLayout.setVisibility(View.GONE);
                         findContainer.setVisibility(View.VISIBLE);
-                        findRecyclerView.setVisibility(View.VISIBLE);
-                        findRecyclerView.requestFocus();
+                        if (!results.isEmpty()) {
+                            defaultLayout.setVisibility(View.GONE);
+                            findRecyclerView.setVisibility(View.VISIBLE);
+                            findRecyclerView.requestFocus();
+                        }
+                        else {
+                            findRecyclerView.setVisibility(View.GONE);
+                            defaultLayout.setVisibility(View.VISIBLE);
+                        }
 
+                        // Loading state
                         if (!findBooksAdapter.loading()) {
                             findRecyclerView.setAdapter(findBooksAdapter);
                         }
@@ -200,7 +225,7 @@ public class FindBooks extends Fragment
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        errorTextView.setText(R.string.connection_issues);
+                        defaultLayout.setVisibility(View.GONE);
                         progressLayout.setVisibility(View.GONE);
                         findRecyclerView.setVisibility(View.GONE);
                         findContainer.setVisibility(View.VISIBLE);
@@ -226,6 +251,7 @@ public class FindBooks extends Fragment
     }
 
     private void showProgressLayout() {
+        defaultLayout.setVisibility(View.GONE);
         errorLayout.setVisibility(View.GONE);
         findContainer.setVisibility(View.GONE);
         findRecyclerView.setVisibility(View.GONE);
@@ -269,11 +295,20 @@ public class FindBooks extends Fragment
     public void onSaveInstanceState(Bundle outState) {
         recyclerState = findRecyclerView.getLayoutManager().onSaveInstanceState();
         searchResult.setResults(results);
+        screenState = new int[] {
+                findContainer.getVisibility(),
+                defaultLayout.getVisibility(),
+                progressLayout.getVisibility(),
+                findRecyclerView.getVisibility(),
+                errorLayout.getVisibility()
+        };
+
         outState.putParcelable(RECYCLER_STATE, recyclerState);
         outState.putParcelable(RECYCLER_STATE_LIST, Parcels.wrap(searchResult));
         outState.putInt(RECYCLER_STATE_PAGE, page);
         outState.putString(RECYCLER_STATE_FIND_TEXT, findText);
         outState.putBoolean(IS_LISTENER_ATTACHED, isListenerAttached);
+        outState.putIntArray(SCREEN_STATE, screenState);
         super.onSaveInstanceState(outState);
     }
 }
