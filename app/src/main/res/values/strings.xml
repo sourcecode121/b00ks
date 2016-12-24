@@ -22,6 +22,7 @@
     <string name="author_name">Author: %s </string>
     <string name="author_average_rating">Average Rating: %s / 5 </string>
     <string name="author_ratings_count">Ratings Count: %s </string>
+
     <string name="connection_issues">Connection issues</string>
     <string name="retry">Retry</string>
     <string name="find_books">Find Books</string>
@@ -30,4 +31,7 @@
     <string name="refresh">Refresh</string>
     <string name="recent_reviews">Recent Reviews</string>
     <string name="no_search_results">No Search Results</string>
+    <string name="author_info_name">Author\'s Fullname</string>
+    <string name="author_info">Author Info</string>
+    <string name="info">Info</string>
 </resources>

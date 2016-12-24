@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.b00ks.R;
+import com.example.b00ks.view.fragments.AuthorInfo;
 import com.example.b00ks.view.fragments.FindBooks;
 import com.example.b00ks.view.fragments.RecentReviews;
 
@@ -75,6 +76,17 @@ public class MainActivity extends AppCompatActivity {
                                     FindBooks findBooks = new FindBooks();
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.fragment_container, findBooks)
+                                            .commit();
+                                }
+                            }, 1000);
+                            break;
+                        case R.id.nav_author_info:
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    AuthorInfo authorInfo = new AuthorInfo();
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.fragment_container, authorInfo)
                                             .commit();
                                 }
                             }, 1000);
