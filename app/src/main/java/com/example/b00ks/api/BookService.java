@@ -25,4 +25,7 @@ public interface BookService {
     @GET("api/author_url/{name}")
     Observable<FindAuthorResponse> findAuthor(@Path("name") String name,
                                               @Query("key") String key);
+    @GET("author/show.xml")
+    Observable<FindAuthorResponse> getAuthorInfo(@Query("id") String id,
+                                                 @Query("key") String key);
 }

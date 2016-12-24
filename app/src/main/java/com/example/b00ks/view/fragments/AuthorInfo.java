@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.b00ks.R;
 import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
+import com.example.b00ks.model.findAuthor.Author;
 import com.example.b00ks.model.findAuthor.FindAuthorResponse;
 import com.example.b00ks.model.findBook.FindBookResponse;
 import com.example.b00ks.view.recycler.FindBooksAdapter;
@@ -32,6 +33,7 @@ import rx.schedulers.Schedulers;
 import static com.example.b00ks.util.Constants.PAGE;
 import static com.example.b00ks.util.Constants.SEARCH_FIELD;
 import static com.example.b00ks.util.Utility.hideKeyboard;
+import static com.example.b00ks.util.Utility.removeHtmlTags;
 import static com.example.b00ks.util.Utility.showKeyboard;
 
 /**
@@ -45,25 +47,26 @@ public class AuthorInfo extends Fragment {
     @Inject
     BookService bookService;
 
-    @BindView(R.id.author_info_container)
-    View authorInfoContainer;
-    @BindView(R.id.error_layout)
-    View errorLayout;
-    @BindView(R.id.progress_layout)
-    View progressLayout;
-    @BindView(R.id.default_layout)
-    View defaultLayout;
-    @BindView(R.id.find_container)
-    View findContainer;
-    @BindView(R.id.find_edit_text)
-    TextInputEditText findEditText;
-    @BindView(R.id.id_text_view)
-    TextView idTextView;
+    @BindView(R.id.author_info_container) View authorInfoContainer;
+    @BindView(R.id.error_layout) View errorLayout;
+    @BindView(R.id.progress_layout) View progressLayout;
+    @BindView(R.id.default_layout) View defaultLayout;
+    @BindView(R.id.find_container) View findContainer;
+    @BindView(R.id.find_edit_text) TextInputEditText findEditText;
+
+    @BindView(R.id.author_info_name) TextView name;
+    @BindView(R.id.author_info_about) TextView about;
+    @BindView(R.id.author_info_works_count) TextView worksCount;
+    @BindView(R.id.author_info_gender) TextView gender;
+    @BindView(R.id.author_info_hometown) TextView hometown;
+    @BindView(R.id.author_info_born_at) TextView bornAt;
+    @BindView(R.id.author_info_died_at) TextView diedAt;
 
     private Context context;
     private Subscription subscription;
     private String findText;
     private String authorId = null;
+    private Author author = null;
 
     @Override
     public void onAttach(Context context) {
@@ -120,16 +123,48 @@ public class AuthorInfo extends Fragment {
                 .subscribe(new Subscriber<FindAuthorResponse>() {
                     @Override
                     public void onCompleted() {
+
+                        subscription.unsubscribe();
                         // Screen state
-                        progressLayout.setVisibility(View.GONE);
-                        errorLayout.setVisibility(View.GONE);
-                        findContainer.setVisibility(View.VISIBLE);
-                        idTextView.setText(authorId);
                         if (authorId == null || authorId.equals("")) {
-                            authorInfoContainer.setVisibility(View.GONE);
-                            defaultLayout.setVisibility(View.VISIBLE);
+                            showDefaultLayout();
                         }
                         else {
+                            getInfo();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        showErrorLayout();
+                    }
+
+                    @Override
+                    public void onNext(FindAuthorResponse findAuthorResponse) {
+                        authorId = findAuthorResponse.getAuthor().getId();
+                    }
+                });
+    }
+
+    private void getInfo() {
+        subscription = bookService.getAuthorInfo(authorId, key)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<FindAuthorResponse>() {
+                    @Override
+                    public void onCompleted() {
+                        if (author == null) {
+                            showDefaultLayout();
+                        }
+                        else {
+                            authorInfoContainer.scrollTo(0, 0);
+                            showAuthorInfo();
+
+                            // Screen state
+                            progressLayout.setVisibility(View.GONE);
+                            errorLayout.setVisibility(View.GONE);
+                            findContainer.setVisibility(View.VISIBLE);
                             defaultLayout.setVisibility(View.GONE);
                             authorInfoContainer.setVisibility(View.VISIBLE);
                             authorInfoContainer.requestFocus();
@@ -141,18 +176,40 @@ public class AuthorInfo extends Fragment {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        defaultLayout.setVisibility(View.GONE);
-                        progressLayout.setVisibility(View.GONE);
-                        authorInfoContainer.setVisibility(View.GONE);
-                        findContainer.setVisibility(View.VISIBLE);
-                        errorLayout.setVisibility(View.VISIBLE);
+                        showErrorLayout();
                     }
 
                     @Override
                     public void onNext(FindAuthorResponse findAuthorResponse) {
-                        authorId = findAuthorResponse.getAuthor().getId();
+                        author = findAuthorResponse.getAuthor();
                     }
                 });
+    }
+
+    private void showAuthorInfo() {
+        name.setText(author.getName());
+        about.setText(removeHtmlTags(author.getAbout()));
+        worksCount.setText(author.getWorksCount());
+        gender.setText(author.getGender());
+        hometown.setText(author.getHometown());
+        bornAt.setText(author.getBornAt());
+        diedAt.setText(author.getDiedAt());
+    }
+
+    private void showDefaultLayout() {
+        progressLayout.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
+        findContainer.setVisibility(View.VISIBLE);
+        authorInfoContainer.setVisibility(View.GONE);
+        defaultLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void showErrorLayout() {
+        defaultLayout.setVisibility(View.GONE);
+        progressLayout.setVisibility(View.GONE);
+        authorInfoContainer.setVisibility(View.GONE);
+        findContainer.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 
     private void showProgressLayout() {
