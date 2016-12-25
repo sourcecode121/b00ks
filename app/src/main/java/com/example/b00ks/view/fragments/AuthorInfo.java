@@ -1,6 +1,7 @@
 package com.example.b00ks.view.fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -16,8 +17,8 @@ import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.findAuthor.Author;
 import com.example.b00ks.model.findAuthor.FindAuthorResponse;
-import com.example.b00ks.model.findBook.FindBookResponse;
-import com.example.b00ks.view.recycler.FindBooksAdapter;
+
+import org.parceler.Parcels;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -30,8 +31,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.example.b00ks.util.Constants.PAGE;
-import static com.example.b00ks.util.Constants.SEARCH_FIELD;
 import static com.example.b00ks.util.Utility.hideKeyboard;
 import static com.example.b00ks.util.Utility.removeHtmlTags;
 import static com.example.b00ks.util.Utility.showKeyboard;
@@ -62,11 +61,17 @@ public class AuthorInfo extends Fragment {
     @BindView(R.id.author_info_born_at) TextView bornAt;
     @BindView(R.id.author_info_died_at) TextView diedAt;
 
+    private static final String AUTHOR = "author";
+    private static final String FIND_TEXT = "find_text";
+    private static final String SCREEN_STATE = "screen_state";
+
     private Context context;
     private Subscription subscription;
     private String findText;
     private String authorId = null;
     private Author author = null;
+    private Resources resources;
+    private int[] screenState;
 
     @Override
     public void onAttach(Context context) {
@@ -93,8 +98,32 @@ public class AuthorInfo extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        findEditText.requestFocus();
-        showKeyboard(getActivity());
+        resources = getResources();
+
+        if (savedInstanceState != null && (screenState = savedInstanceState.getIntArray(SCREEN_STATE)) != null) {
+
+            findText = savedInstanceState.getString(FIND_TEXT);
+
+            if (screenState[2] == View.VISIBLE) {
+                showProgressLayout();
+                connect();
+            }
+            else {
+                author = Parcels.unwrap(savedInstanceState.getParcelable(AUTHOR));
+                if (author != null) {
+                    showAuthorInfo();
+                }
+
+                findContainer.setVisibility(screenState[0]);
+                defaultLayout.setVisibility(screenState[1]);
+                authorInfoContainer.setVisibility(screenState[3]);
+                errorLayout.setVisibility(screenState[4]);
+            }
+        }
+        else {
+            findEditText.requestFocus();
+            showKeyboard(getActivity());
+        }
     }
 
     @OnClick(R.id.find_button)
@@ -159,6 +188,7 @@ public class AuthorInfo extends Fragment {
                         }
                         else {
                             authorInfoContainer.scrollTo(0, 0);
+                            resetViewVisibility();
                             showAuthorInfo();
 
                             // Screen state
@@ -167,7 +197,6 @@ public class AuthorInfo extends Fragment {
                             findContainer.setVisibility(View.VISIBLE);
                             defaultLayout.setVisibility(View.GONE);
                             authorInfoContainer.setVisibility(View.VISIBLE);
-                            authorInfoContainer.requestFocus();
                         }
 
                         subscription.unsubscribe();
@@ -186,14 +215,40 @@ public class AuthorInfo extends Fragment {
                 });
     }
 
+    private void resetViewVisibility() {
+        about.setVisibility(View.VISIBLE);
+        worksCount.setVisibility(View.VISIBLE);
+        gender.setVisibility(View.VISIBLE);
+        hometown.setVisibility(View.VISIBLE);
+        bornAt.setVisibility(View.VISIBLE);
+        diedAt.setVisibility(View.VISIBLE);
+    }
+
     private void showAuthorInfo() {
         name.setText(author.getName());
-        about.setText(removeHtmlTags(author.getAbout()));
-        worksCount.setText(author.getWorksCount());
-        gender.setText(author.getGender());
-        hometown.setText(author.getHometown());
-        bornAt.setText(author.getBornAt());
-        diedAt.setText(author.getDiedAt());
+
+        if (author.getAbout() == null || author.getAbout().trim().equals("")) {
+            about.setVisibility(View.GONE);
+        }
+        else {
+            String str = removeHtmlTags(author.getAbout().trim());
+            about.setText(resources.getString(R.string.author_info_about, str));
+        }
+
+        if (author.getWorksCount() == null || author.getWorksCount().trim().equals("")) worksCount.setVisibility(View.GONE);
+        else worksCount.setText(resources.getString(R.string.author_info_works_count, author.getWorksCount()));
+
+        if (author.getGender() == null || author.getGender().trim().equals("")) gender.setVisibility(View.GONE);
+        else gender.setText(resources.getString(R.string.author_info_gender, author.getGender()));
+
+        if (author.getHometown() == null || author.getHometown().trim().equals("")) hometown.setVisibility(View.GONE);
+        else hometown.setText(resources.getString(R.string.author_info_hometown, author.getHometown()));
+
+        if (author.getBornAt() == null || author.getBornAt().trim().equals("")) bornAt.setVisibility(View.GONE);
+        else bornAt.setText(resources.getString(R.string.author_info_born_at, author.getBornAt()));
+
+        if (author.getDiedAt() == null || author.getDiedAt().trim().equals("")) diedAt.setVisibility(View.GONE);
+        else diedAt.setText(resources.getString(R.string.author_info_died_at, author.getDiedAt()));
     }
 
     private void showDefaultLayout() {
@@ -226,5 +281,21 @@ public class AuthorInfo extends Fragment {
             subscription.unsubscribe();
         }
         super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        screenState = new int[] {
+                findContainer.getVisibility(),
+                defaultLayout.getVisibility(),
+                progressLayout.getVisibility(),
+                authorInfoContainer.getVisibility(),
+                errorLayout.getVisibility()
+        };
+
+        outState.putParcelable(AUTHOR, Parcels.wrap(author));
+        outState.putString(FIND_TEXT, findText);
+        outState.putIntArray(SCREEN_STATE, screenState);
+        super.onSaveInstanceState(outState);
     }
 }

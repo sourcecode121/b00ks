@@ -1,5 +1,6 @@
 package com.example.b00ks.model.findAuthor;
 
+import org.parceler.Parcel;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
@@ -12,6 +13,7 @@ import static android.R.attr.required;
  * Created by Anand on 24/12/2016.
  */
 
+@Parcel(Parcel.Serialization.BEAN)
 @Root(name = "author", strict = false)
 @Default(DefaultType.PROPERTY)
 public class Author {

@@ -34,4 +34,11 @@
     <string name="author_info_name">Author\'s Fullname</string>
     <string name="author_info">Author Info</string>
     <string name="info">Info</string>
+
+    <string name="author_info_about">About:\n%s</string>
+    <string name="author_info_works_count">Works Count: %s</string>
+    <string name="author_info_gender">Gender: %s</string>
+    <string name="author_info_hometown">Hometown: %s</string>
+    <string name="author_info_born_at">Born At: %s</string>
+    <string name="author_info_died_at">Died At: %s</string>
 </resources>
