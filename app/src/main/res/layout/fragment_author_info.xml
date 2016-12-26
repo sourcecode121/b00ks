@@ -21,7 +21,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:hint="@string/author_info_name"/>
+            android:hint="@string/author_info_name"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
 
         <Button
             android:id="@+id/find_button"

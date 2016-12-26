@@ -10,9 +10,11 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -122,6 +124,16 @@ public class FindBooks extends Fragment
 
         searchResult = new SearchResult();
         results = new ArrayList<>();
+
+        findEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    findButtonClick();
+                }
+                return true;
+            }
+        });
 
         findRecyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(context);

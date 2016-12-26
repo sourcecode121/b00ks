@@ -19,7 +19,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:hint="@string/title_author_isbn"/>
+            android:hint="@string/title_author_isbn"
+            android:inputType="text"
+            android:imeOptions="actionSearch"/>
 
         <Button
             android:id="@+id/find_button"
