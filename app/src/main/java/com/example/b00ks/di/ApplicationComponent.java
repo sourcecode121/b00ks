@@ -1,5 +1,6 @@
 package com.example.b00ks.di;
 
+import com.example.b00ks.view.BookDetailsActivity;
 import com.example.b00ks.view.fragments.AuthorInfo;
 import com.example.b00ks.view.fragments.FindBooks;
 import com.example.b00ks.view.fragments.RecentReviews;
@@ -18,4 +19,5 @@ public interface ApplicationComponent {
     void inject(RecentReviews target);
     void inject(FindBooks target);
     void inject(AuthorInfo target);
+    void inject(BookDetailsActivity target);
 }

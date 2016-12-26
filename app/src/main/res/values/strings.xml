@@ -17,6 +17,7 @@
     <string name="book_ratings_count">Ratings Count: %s</string>
     <string name="book_reviews_count">Reviews Count: %s</string>
     <string name="book_publication_date">Published: %s</string>
+    <string name="book_description">Description:\n%s</string>
 
     <string name="author_details_title">Author Details</string>
     <string name="author_name">Author: %s </string>

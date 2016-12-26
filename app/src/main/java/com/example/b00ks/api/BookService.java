@@ -1,5 +1,6 @@
 package com.example.b00ks.api;
 
+import com.example.b00ks.model.bookInfo.BookInfoResponse;
 import com.example.b00ks.model.findAuthor.FindAuthorResponse;
 import com.example.b00ks.model.findBook.FindBookResponse;
 import com.example.b00ks.model.recentReview.RecentReviewResponse;
@@ -28,4 +29,7 @@ public interface BookService {
     @GET("author/show.xml")
     Observable<FindAuthorResponse> getAuthorInfo(@Query("id") String id,
                                                  @Query("key") String key);
+    @GET("book/show.xml")
+    Observable<BookInfoResponse> getBookInfo(@Query("id") String id,
+                                             @Query("key") String key);
 }
