@@ -55,5 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/details_margin"/>
 
+        <include layout="@layout/footer"/>
+
     </LinearLayout>
 </ScrollView>
