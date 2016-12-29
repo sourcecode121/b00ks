@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static com.example.b00ks.util.Constants.MONTHS;
+import static com.example.b00ks.util.Utility.applyHtmlTags;
 import static com.example.b00ks.util.Utility.removeHtmlTags;
 
 /**
@@ -62,6 +64,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     TextView ratingsCount;
     @BindView(R.id.book_details_reviews_count)
     TextView reviewsCount;
+    @BindView(R.id.book_details_link)
+    TextView link;
 
     private static final String BOOK_INFO = "book_info";
     private static final String SCREEN_STATE = "screen_state";
@@ -188,6 +192,9 @@ public class BookDetailsActivity extends AppCompatActivity {
         averageRating.setText(resources.getString(R.string.book_average_rating, work.getAverageRating()));
         ratingsCount.setText(resources.getString(R.string.book_ratings_count, work.getRatingsCount()));
         reviewsCount.setText(resources.getString(R.string.book_reviews_count, work.getReviewsCount()));
+        link.setMovementMethod(LinkMovementMethod.getInstance());
+        String strLink = resources.getString(R.string.web_link, book.getLink());
+        link.setText(applyHtmlTags(strLink));
     }
 
     @Override

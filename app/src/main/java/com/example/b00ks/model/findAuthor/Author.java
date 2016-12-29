@@ -27,6 +27,7 @@ public class Author {
     private String hometown;
     private String bornAt;
     private String diedAt;
+    private String link;
 
     @Attribute(required = false)
     public String getId() {
@@ -116,5 +117,15 @@ public class Author {
     @Element(name = "died_at", required = false)
     public void setDiedAt(String diedAt) {
         this.diedAt = diedAt;
+    }
+
+    @Element(required = false)
+    public String getLink() {
+        return link;
+    }
+
+    @Element(required = false)
+    public void setLink(String link) {
+        this.link = link;
     }
 }

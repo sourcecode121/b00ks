@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.text.Html;
+import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -20,6 +21,16 @@ public class Utility {
         }
         else {
             return Html.fromHtml(source).toString().trim();
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static Spanned applyHtmlTags(String source) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(source, Html.FROM_HTML_MODE_LEGACY);
+        }
+        else {
+            return Html.fromHtml(source);
         }
     }
 

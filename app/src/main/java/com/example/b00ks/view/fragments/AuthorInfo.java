@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.text.method.LinkMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static com.example.b00ks.util.Utility.applyHtmlTags;
 import static com.example.b00ks.util.Utility.hideKeyboard;
 import static com.example.b00ks.util.Utility.removeHtmlTags;
 import static com.example.b00ks.util.Utility.showKeyboard;
@@ -62,6 +64,7 @@ public class AuthorInfo extends Fragment {
     @BindView(R.id.author_info_hometown) TextView hometown;
     @BindView(R.id.author_info_born_at) TextView bornAt;
     @BindView(R.id.author_info_died_at) TextView diedAt;
+    @BindView(R.id.author_info_link) TextView link;
 
     private static final String AUTHOR = "author";
     private static final String FIND_TEXT = "find_text";
@@ -261,6 +264,10 @@ public class AuthorInfo extends Fragment {
 
         if (author.getDiedAt() == null || author.getDiedAt().trim().equals("")) diedAt.setVisibility(View.GONE);
         else diedAt.setText(resources.getString(R.string.author_info_died_at, author.getDiedAt()));
+
+        link.setMovementMethod(LinkMovementMethod.getInstance());
+        String strLink = resources.getString(R.string.web_link, author.getLink());
+        link.setText(applyHtmlTags(strLink));
     }
 
     private void showDefaultLayout() {

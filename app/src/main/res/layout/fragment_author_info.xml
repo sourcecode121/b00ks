@@ -90,6 +90,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/details_margin"/>
 
+            <TextView
+                android:id="@+id/author_info_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/details_margin"/>
+
             <include layout="@layout/footer"/>
 
         </LinearLayout>

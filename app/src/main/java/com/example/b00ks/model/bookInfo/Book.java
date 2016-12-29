@@ -16,6 +16,7 @@ import org.simpleframework.xml.Root;
 public class Book {
 
     private String description;
+    private String link;
 
     @Element(required = false)
     public String getDescription() {
@@ -25,5 +26,13 @@ public class Book {
     @Element(required = false)
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
