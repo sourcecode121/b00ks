@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.b00ks.util.Utility.applyHtmlTags;
 
 /**
  * Created by Anand on 15/11/2016.
@@ -39,6 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.author_details_name) TextView authorName;
     @BindView(R.id.author_details_average_rating) TextView authorAverageRating;
     @BindView(R.id.author_details_ratings_count) TextView authorRatingsCount;
+    @BindView(R.id.review_details_link) TextView link;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,5 +91,9 @@ public class DetailsActivity extends AppCompatActivity {
                 authorRatingsCount.append(resources.getString(R.string.author_ratings_count, author.getRatingsCount()));
             }
         }
+
+        link.setMovementMethod(LinkMovementMethod.getInstance());
+        String strLink = resources.getString(R.string.web_link, review.getLink());
+        link.setText(applyHtmlTags(strLink));
     }
 }

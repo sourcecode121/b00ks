@@ -19,6 +19,7 @@ public class Review {
     private Book book;
     private String rating;
     private String body;
+    private String link;
 
     public String getId() {
         return id;
@@ -58,5 +59,13 @@ public class Review {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
