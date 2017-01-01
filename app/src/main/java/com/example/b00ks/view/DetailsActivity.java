@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
@@ -13,6 +14,7 @@ import com.example.b00ks.model.recentReview.Author;
 import com.example.b00ks.model.recentReview.Review;
 import com.example.b00ks.util.Utility;
 import com.example.b00ks.view.fragments.RecentReviews;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -43,6 +45,9 @@ public class DetailsActivity extends AppCompatActivity {
     @BindView(R.id.author_details_average_rating) TextView authorAverageRating;
     @BindView(R.id.author_details_ratings_count) TextView authorRatingsCount;
     @BindView(R.id.review_details_link) TextView link;
+    @BindView(R.id.details_image) ImageView detailsImage;
+    @BindView(R.id.details_title) TextView detailsTitle;
+    @BindView(R.id.details_name) TextView detailsName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +59,13 @@ public class DetailsActivity extends AppCompatActivity {
         Review review = Parcels.unwrap(getIntent().getParcelableExtra(RecentReviews.DETAILS));
 
         Resources resources = getResources();
+
+        Picasso.with(this)
+                .load(review.getBook().getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .resize(220, 300)
+                .into(detailsImage);
+        detailsTitle.setText(review.getBook().getTitle());
 
         displayName.setText(resources.getString(R.string.user_display_name, review.getUser().getDisplayName()));
         reviewRating.setText(resources.getString(R.string.user_rating, review.getRating()));
@@ -89,6 +101,8 @@ public class DetailsActivity extends AppCompatActivity {
                 authorName.append(resources.getString(R.string.author_name, author.getName()));
                 authorAverageRating.append(resources.getString(R.string.author_average_rating, author.getAverageRating()));
                 authorRatingsCount.append(resources.getString(R.string.author_ratings_count, author.getRatingsCount()));
+
+                detailsName.append(resources.getString(R.string.details_name, author.getName()));
             }
         }
 
