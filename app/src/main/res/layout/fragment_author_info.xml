@@ -48,11 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/author_info_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"/>
+            <include layout="@layout/details_header"/>
 
             <TextView
                 android:id="@+id/author_info_about"

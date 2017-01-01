@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.b00ks.R;
@@ -15,6 +16,7 @@ import com.example.b00ks.model.bookInfo.Book;
 import com.example.b00ks.model.bookInfo.BookInfoResponse;
 import com.example.b00ks.model.findBook.Work;
 import com.example.b00ks.view.fragments.FindBooks;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -52,9 +54,9 @@ public class BookDetailsActivity extends AppCompatActivity {
     View bookDetailsContainer;
     @BindView(R.id.book_details_description)
     TextView description;
-    @BindView(R.id.book_details_title)
+    @BindView(R.id.details_title)
     TextView title;
-    @BindView(R.id.book_details_author)
+    @BindView(R.id.details_name)
     TextView author;
     @BindView(R.id.book_details_publication_date)
     TextView publicationDate;
@@ -66,6 +68,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     TextView reviewsCount;
     @BindView(R.id.book_details_link)
     TextView link;
+    @BindView(R.id.details_image)
+    ImageView detailsImage;
 
     private static final String BOOK_INFO = "book_info";
     private static final String SCREEN_STATE = "screen_state";
@@ -156,8 +160,14 @@ public class BookDetailsActivity extends AppCompatActivity {
         String month;
         String date;
 
+        Picasso.with(this)
+                .load(work.getBestBook().getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .resize(220, 300)
+                .into(detailsImage);
+
         title.setText(work.getBestBook().getTitle());
-        author.setText(resources.getString(R.string.author_name, work.getBestBook().getAuthor().getName()));
+        author.setText(work.getBestBook().getAuthor().getName());
 
         if (work.getPublicationYear() == null || work.getPublicationYear().trim().equals("")) {
             publicationDate.setVisibility(View.GONE);

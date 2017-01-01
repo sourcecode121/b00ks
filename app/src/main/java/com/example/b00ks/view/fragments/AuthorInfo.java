@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.example.b00ks.api.BookService;
 import com.example.b00ks.di.BaseApplication;
 import com.example.b00ks.model.findAuthor.Author;
 import com.example.b00ks.model.findAuthor.FindAuthorResponse;
+import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
@@ -57,7 +59,7 @@ public class AuthorInfo extends Fragment {
     @BindView(R.id.find_container) View findContainer;
     @BindView(R.id.find_edit_text) TextInputEditText findEditText;
 
-    @BindView(R.id.author_info_name) TextView name;
+    @BindView(R.id.details_name) TextView name;
     @BindView(R.id.author_info_about) TextView about;
     @BindView(R.id.author_info_works_count) TextView worksCount;
     @BindView(R.id.author_info_gender) TextView gender;
@@ -65,6 +67,8 @@ public class AuthorInfo extends Fragment {
     @BindView(R.id.author_info_born_at) TextView bornAt;
     @BindView(R.id.author_info_died_at) TextView diedAt;
     @BindView(R.id.author_info_link) TextView link;
+    @BindView(R.id.details_image) ImageView detailsImage;
+    @BindView(R.id.details_title) TextView detailsTitle;
 
     private static final String AUTHOR = "author";
     private static final String FIND_TEXT = "find_text";
@@ -102,6 +106,8 @@ public class AuthorInfo extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        name.setVisibility(View.GONE);
 
         resources = getResources();
 
@@ -240,7 +246,13 @@ public class AuthorInfo extends Fragment {
     }
 
     private void showAuthorInfo() {
-        name.setText(author.getName());
+
+        Picasso.with(context)
+                .load(author.getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .resize(300, 300)
+                .into(detailsImage);
+        detailsTitle.setText(author.getName());
 
         if (author.getAbout() == null || author.getAbout().trim().equals("")) {
             about.setVisibility(View.GONE);
