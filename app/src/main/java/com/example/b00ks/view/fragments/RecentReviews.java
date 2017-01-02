@@ -96,6 +96,7 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.recent_reviews);
 
         booksRecyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(context);

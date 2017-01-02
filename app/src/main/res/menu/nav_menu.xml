@@ -3,14 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_recent_reviews"
+            android:id="@+id/nav_home"
             android:checked="true"
-            android:title="@string/recent_reviews"/>
+            android:title="@string/home"/>
         <item
             android:id="@+id/nav_find_books"
             android:title="@string/find_books"/>
         <item
             android:id="@+id/nav_author_info"
             android:title="@string/author_info"/>
+        <item
+            android:id="@+id/nav_recent_reviews"
+            android:title="@string/recent_reviews"/>
     </group>
 </menu>

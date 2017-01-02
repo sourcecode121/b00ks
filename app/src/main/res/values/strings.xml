@@ -45,4 +45,8 @@
     <string name="author_info_born_at">Born At: %s</string>
     <string name="author_info_died_at">Died At: %s</string>
     <string name="powered_by">powered by</string>
+    <string name="home_find_books_desc">Search for any book using Title / Author / ISBN</string>
+    <string name="home_author_info_desc">Everything you need to know about your favourite author</string>
+    <string name="home_recent_reviews_desc">See the latest reviews from goodreads</string>
+    <string name="home">Home</string>
 </resources>

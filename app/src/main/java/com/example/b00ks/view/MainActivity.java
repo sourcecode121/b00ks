@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.b00ks.R;
 import com.example.b00ks.view.fragments.AuthorInfo;
 import com.example.b00ks.view.fragments.FindBooks;
+import com.example.b00ks.view.fragments.Home;
 import com.example.b00ks.view.fragments.RecentReviews;
 
 import butterknife.BindView;
@@ -45,9 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setUpNavigationDrawer();
 
         if (savedInstanceState == null) {
-            RecentReviews recentReviews =  new RecentReviews();
+            Home home =  new Home();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, recentReviews)
+                    .add(R.id.fragment_container, home)
                     .commit();
         }
     }
@@ -63,20 +64,17 @@ public class MainActivity extends AppCompatActivity {
                     item.setChecked(true);
                     drawerLayout.closeDrawers();
                     switch (item.getItemId()) {
-                        case R.id.nav_recent_reviews:
-                            RecentReviews recentReviews = new RecentReviews();
+                        case R.id.nav_home:
+                            Home home =  new Home();
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, recentReviews)
+                                    .replace(R.id.fragment_container, home)
                                     .commit();
                             break;
                         case R.id.nav_find_books:
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    FindBooks findBooks = new FindBooks();
-                                    getSupportFragmentManager().beginTransaction()
-                                            .replace(R.id.fragment_container, findBooks)
-                                            .commit();
+                                    showFindBooks();
                                 }
                             }, 1000);
                             break;
@@ -84,18 +82,39 @@ public class MainActivity extends AppCompatActivity {
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    AuthorInfo authorInfo = new AuthorInfo();
-                                    getSupportFragmentManager().beginTransaction()
-                                            .replace(R.id.fragment_container, authorInfo)
-                                            .commit();
+                                    showAuthorInfo();
                                 }
                             }, 1000);
+                            break;
+                        case R.id.nav_recent_reviews:
+                            showRecentReviews();
                             break;
                     }
                 }
                 return true;
             }
         });
+    }
+
+    private void showRecentReviews() {
+        RecentReviews recentReviews = new RecentReviews();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, recentReviews)
+                .commit();
+    }
+
+    private void showAuthorInfo() {
+        AuthorInfo authorInfo = new AuthorInfo();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, authorInfo)
+                .commit();
+    }
+
+    private void showFindBooks() {
+        FindBooks findBooks = new FindBooks();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, findBooks)
+                .commit();
     }
 
     @Override

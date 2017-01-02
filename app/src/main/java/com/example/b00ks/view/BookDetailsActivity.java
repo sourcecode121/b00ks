@@ -85,6 +85,7 @@ public class BookDetailsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_details);
+        setTitle(R.string.find_books);
 
         ((BaseApplication) getApplication()).getComponent().inject(this);
 

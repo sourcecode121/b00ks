@@ -121,6 +121,7 @@ public class FindBooks extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getActivity().setTitle(R.string.find_books);
 
         searchResult = new SearchResult();
         results = new ArrayList<>();
