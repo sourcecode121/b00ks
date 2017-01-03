@@ -24,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.example.b00ks.util.Utility.applyHtmlTags;
+import static com.example.b00ks.util.Utility.removeHtmlTags;
 
 /**
  * Created by Anand on 15/11/2016.
@@ -68,40 +69,44 @@ public class DetailsActivity extends AppCompatActivity {
                 .into(detailsImage);
         detailsTitle.setText(review.getBook().getTitle());
 
-        displayName.setText(resources.getString(R.string.user_display_name, review.getUser().getDisplayName()));
-        reviewRating.setText(resources.getString(R.string.user_rating, review.getRating()));
+        displayName.setText(applyHtmlTags(resources.getString(R.string.user_display_name, review.getUser().getDisplayName())));
+        reviewRating.setText(applyHtmlTags(resources.getString(R.string.user_rating, review.getRating())));
 
         String reviewBody = review.getBody();
         if (reviewBody == null) body.setVisibility(View.GONE);
-        else body.setText(Utility.removeHtmlTags(resources.getString(R.string.user_review, reviewBody.trim())));
+        else body.setText(applyHtmlTags(resources.getString(R.string.user_review, removeHtmlTags(reviewBody.trim()))));
 
-        title.setText(resources.getString(R.string.book_title, review.getBook().getTitle()));
+        title.setText(applyHtmlTags(resources.getString(R.string.book_title, review.getBook().getTitle())));
 
         String bookPages = review.getBook().getNumPages();
         if (bookPages == null) numPages.setVisibility(View.GONE);
-        else numPages.setText(resources.getString(R.string.num_pages, bookPages));
+        else numPages.setText(applyHtmlTags(resources.getString(R.string.num_pages, bookPages)));
 
         String bookFormat = review.getBook().getFormat();
         if (bookFormat == null) format.setVisibility(View.GONE);
-        else format.setText(resources.getString(R.string.format, bookFormat));
+        else format.setText(applyHtmlTags(resources.getString(R.string.format, bookFormat)));
 
         String bookPublisher = review.getBook().getPublisher();
         if (bookPublisher == null) publisher.setVisibility(View.GONE);
-        else publisher.setText(resources.getString(R.string.publisher, bookPublisher));
+        else publisher.setText(applyHtmlTags(resources.getString(R.string.publisher, bookPublisher)));
 
         String bookYear = review.getBook().getPublicationYear();
         if (bookYear == null) publicationYear.setVisibility(View.GONE);
-        else publicationYear.setText(resources.getString(R.string.publication_year, bookYear));
+        else publicationYear.setText(applyHtmlTags(resources.getString(R.string.publication_year, bookYear)));
 
-        bookAverageRating.setText(resources.getString(R.string.book_average_rating, review.getBook().getAverageRating()));
-        bookRatingsCount.setText(resources.getString(R.string.book_ratings_count, review.getBook().getRatingsCount()));
+        bookAverageRating.setText(applyHtmlTags(resources.getString(R.string.book_average_rating,
+                review.getBook().getAverageRating())));
+        bookRatingsCount.setText(applyHtmlTags(resources.getString(R.string.book_ratings_count,
+                review.getBook().getRatingsCount())));
 
         List<Author> authors = review.getBook().getAuthors();
         if (!authors.isEmpty()) {
             for (Author author : authors) {
-                authorName.append(resources.getString(R.string.author_name, author.getName()));
-                authorAverageRating.append(resources.getString(R.string.author_average_rating, author.getAverageRating()));
-                authorRatingsCount.append(resources.getString(R.string.author_ratings_count, author.getRatingsCount()));
+                authorName.append(applyHtmlTags(resources.getString(R.string.author_name, author.getName())));
+                authorAverageRating.append(applyHtmlTags(resources.getString(R.string.author_average_rating,
+                        author.getAverageRating())));
+                authorRatingsCount.append(applyHtmlTags(resources.getString(R.string.author_ratings_count,
+                        author.getRatingsCount())));
 
                 detailsName.append(resources.getString(R.string.details_name, author.getName()));
             }

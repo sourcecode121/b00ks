@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/bgColor">
 
     <LinearLayout
         android:orientation="vertical"
@@ -18,6 +19,9 @@
             android:id="@+id/review_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/headerColor"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:text="@string/review_details_title"/>
 
@@ -44,6 +48,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/details_margin"
+            android:gravity="center"
+            android:background="@color/headerColor"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:text="@string/book_details_title"/>
 
@@ -94,6 +101,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/details_margin"
+            android:gravity="center"
+            android:background="@color/headerColor"
+            android:textColor="@android:color/white"
             android:textStyle="bold"
             android:text="@string/author_details_title"/>
 

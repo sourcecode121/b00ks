@@ -175,17 +175,18 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
         else {
             if (work.getPublicationMonth() == null || work.getPublicationMonth().trim().equals("")) {
-                publicationDate.setText(resources.getString(R.string.book_publication_date, work.getPublicationYear()));
+                publicationDate.setText(applyHtmlTags(resources.getString(R.string.book_publication_date,
+                        work.getPublicationYear())));
             }
             else {
                 month = MONTHS[Integer.parseInt(work.getPublicationMonth()) - 1];
                 if (work.getPublicationDay() == null || work.getPublicationDay().trim().equals("")) {
                     date = month + ", " + work.getPublicationYear();
-                    publicationDate.setText(resources.getString(R.string.book_publication_date, date));
+                    publicationDate.setText(applyHtmlTags(resources.getString(R.string.book_publication_date, date)));
                 }
                 else {
                     date = month + " " + work.getPublicationDay() + ", " + work.getPublicationYear();
-                    publicationDate.setText(resources.getString(R.string.book_publication_date, date));
+                    publicationDate.setText(applyHtmlTags(resources.getString(R.string.book_publication_date, date)));
                 }
             }
         }
@@ -195,14 +196,15 @@ public class BookDetailsActivity extends AppCompatActivity {
                 description.setVisibility(View.GONE);
             }
             else {
-                description.setText(resources.getString(R.string.book_description,
-                        removeHtmlTags(book.getDescription().trim())));
+                String str = "\n" + removeHtmlTags(book.getDescription().trim());
+                description.setText(applyHtmlTags(resources.getString(R.string.book_description)));
+                description.append(str);
             }
         }
 
-        averageRating.setText(resources.getString(R.string.book_average_rating, work.getAverageRating()));
-        ratingsCount.setText(resources.getString(R.string.book_ratings_count, work.getRatingsCount()));
-        reviewsCount.setText(resources.getString(R.string.book_reviews_count, work.getReviewsCount()));
+        averageRating.setText(applyHtmlTags(resources.getString(R.string.book_average_rating, work.getAverageRating())));
+        ratingsCount.setText(applyHtmlTags(resources.getString(R.string.book_ratings_count, work.getRatingsCount())));
+        reviewsCount.setText(applyHtmlTags(resources.getString(R.string.book_reviews_count, work.getReviewsCount())));
         link.setMovementMethod(LinkMovementMethod.getInstance());
         String strLink = resources.getString(R.string.web_link, book.getLink());
         link.setText(applyHtmlTags(strLink));

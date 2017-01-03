@@ -3,27 +3,27 @@
     <string name="api_key_string">@string/api_key</string>
 
     <string name="review_details_title">Review Details</string>
-    <string name="user_display_name">User: %s</string>
-    <string name="user_rating">Rating: %s / 5</string>
-    <string name="user_review">Review: %s</string>
+    <string name="user_display_name">&lt;b>User:&lt;/b> %s</string>
+    <string name="user_rating">&lt;b>Rating:&lt;/b> %s / 5</string>
+    <string name="user_review">&lt;b>Review:&lt;/b> %s</string>
 
     <string name="book_details_title">Book Details</string>
-    <string name="book_title">Title: %s</string>
-    <string name="num_pages">Pages: %s</string>
-    <string name="format">Format: %s</string>
-    <string name="publisher">Publisher: %s</string>
-    <string name="publication_year">Year: %s</string>
-    <string name="book_average_rating">Average Rating: %s / 5</string>
-    <string name="book_ratings_count">Ratings Count: %s</string>
-    <string name="book_reviews_count">Reviews Count: %s</string>
-    <string name="book_publication_date">Published: %s</string>
-    <string name="book_description">Description:\n%s</string>
+    <string name="book_title">&lt;b>Title:&lt;/b> %s</string>
+    <string name="num_pages">&lt;b>Pages:&lt;/b> %s</string>
+    <string name="format">&lt;b>Format:&lt;/b> %s</string>
+    <string name="publisher">&lt;b>Publisher:&lt;/b> %s</string>
+    <string name="publication_year">&lt;b>Year:&lt;/b> %s</string>
+    <string name="book_average_rating">&lt;b>Average Rating:&lt;/b> %s / 5</string>
+    <string name="book_ratings_count">&lt;b>Ratings Count:&lt;/b> %s</string>
+    <string name="book_reviews_count">&lt;b>Reviews Count:&lt;/b> %s</string>
+    <string name="book_publication_date">&lt;b>Published:&lt;/b> %s</string>
+    <string name="book_description">&lt;b>Description:&lt;/b></string>
     <string name="web_link">&lt;a href=\"%s\"&gt;more…&lt;/a&gt;</string>
 
     <string name="author_details_title">Author Details</string>
-    <string name="author_name">Author: %s </string>
-    <string name="author_average_rating">Average Rating: %s / 5 </string>
-    <string name="author_ratings_count">Ratings Count: %s </string>
+    <string name="author_name">&lt;b>Author:&lt;/b> %s </string>
+    <string name="author_average_rating">&lt;b>Average Rating:&lt;/b> %s / 5 </string>
+    <string name="author_ratings_count">&lt;b>Ratings Count:&lt;/b> %s </string>
     <string name="details_name">%s\n</string>
 
     <string name="connection_issues">Connection issues</string>
@@ -38,12 +38,12 @@
     <string name="author_info">Author Info</string>
     <string name="info">Info</string>
 
-    <string name="author_info_about">About:\n%s</string>
-    <string name="author_info_works_count">Works Count: %s</string>
-    <string name="author_info_gender">Gender: %s</string>
-    <string name="author_info_hometown">Hometown: %s</string>
-    <string name="author_info_born_at">Born At: %s</string>
-    <string name="author_info_died_at">Died At: %s</string>
+    <string name="author_info_about">&lt;b>About:&lt;/b></string>
+    <string name="author_info_works_count">&lt;b>Works Count:&lt;/b> %s</string>
+    <string name="author_info_gender">&lt;b>Gender:&lt;/b> %s</string>
+    <string name="author_info_hometown">&lt;b>Hometown:&lt;/b> %s</string>
+    <string name="author_info_born_at">&lt;b>Born At:&lt;/b> %s</string>
+    <string name="author_info_died_at">&lt;b>Died At:&lt;/b> %s</string>
     <string name="powered_by">powered by</string>
     <string name="home_find_books_desc">Search for any book using Title / Author / ISBN</string>
     <string name="home_author_info_desc">Everything you need to know about your favourite author</string>

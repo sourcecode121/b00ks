@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/bgColor"
     android:gravity="center_horizontal">
 
     <android.support.v7.widget.CardView
@@ -35,6 +36,7 @@
                 android:id="@+id/find_books_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
                 android:text="@string/find_books"/>
 
@@ -43,6 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:text="@string/home_find_books_desc"/>
 
         </LinearLayout>
@@ -76,6 +79,7 @@
                 android:id="@+id/author_info_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
                 android:text="@string/author_info"/>
 
@@ -84,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:text="@string/home_author_info_desc"/>
 
         </LinearLayout>
@@ -117,6 +122,7 @@
                 android:id="@+id/recent_reviews_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textStyle="bold"
                 android:text="@string/recent_reviews"/>
 
@@ -125,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:text="@string/home_recent_reviews_desc"/>
 
         </LinearLayout>

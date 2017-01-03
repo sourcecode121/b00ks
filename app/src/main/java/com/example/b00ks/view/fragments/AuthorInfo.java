@@ -251,7 +251,6 @@ public class AuthorInfo extends Fragment {
         Picasso.with(context)
                 .load(author.getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
-                .resize(300, 300)
                 .into(detailsImage);
         detailsTitle.setText(author.getName());
 
@@ -259,24 +258,25 @@ public class AuthorInfo extends Fragment {
             about.setVisibility(View.GONE);
         }
         else {
-            String str = removeHtmlTags(author.getAbout().trim());
-            about.setText(resources.getString(R.string.author_info_about, str));
+            String str = "\n" + removeHtmlTags(author.getAbout().trim());
+            about.setText(applyHtmlTags(resources.getString(R.string.author_info_about)));
+            about.append(str);
         }
 
         if (author.getWorksCount() == null || author.getWorksCount().trim().equals("")) worksCount.setVisibility(View.GONE);
-        else worksCount.setText(resources.getString(R.string.author_info_works_count, author.getWorksCount()));
+        else worksCount.setText(applyHtmlTags(resources.getString(R.string.author_info_works_count, author.getWorksCount())));
 
         if (author.getGender() == null || author.getGender().trim().equals("")) gender.setVisibility(View.GONE);
-        else gender.setText(resources.getString(R.string.author_info_gender, author.getGender()));
+        else gender.setText(applyHtmlTags(resources.getString(R.string.author_info_gender, author.getGender())));
 
         if (author.getHometown() == null || author.getHometown().trim().equals("")) hometown.setVisibility(View.GONE);
-        else hometown.setText(resources.getString(R.string.author_info_hometown, author.getHometown()));
+        else hometown.setText(applyHtmlTags(resources.getString(R.string.author_info_hometown, author.getHometown())));
 
         if (author.getBornAt() == null || author.getBornAt().trim().equals("")) bornAt.setVisibility(View.GONE);
-        else bornAt.setText(resources.getString(R.string.author_info_born_at, author.getBornAt()));
+        else bornAt.setText(applyHtmlTags(resources.getString(R.string.author_info_born_at, author.getBornAt())));
 
         if (author.getDiedAt() == null || author.getDiedAt().trim().equals("")) diedAt.setVisibility(View.GONE);
-        else diedAt.setText(resources.getString(R.string.author_info_died_at, author.getDiedAt()));
+        else diedAt.setText(applyHtmlTags(resources.getString(R.string.author_info_died_at, author.getDiedAt())));
 
         link.setMovementMethod(LinkMovementMethod.getInstance());
         String strLink = resources.getString(R.string.web_link, author.getLink());
