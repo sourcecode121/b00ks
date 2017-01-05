@@ -6,4 +6,5 @@
 
     <color name="bgColor">#efebe9</color>
     <color name="headerColor">#8d6e63</color>
+    <color name="buttonColor">#d7ccc8</color>
 </resources>

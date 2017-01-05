@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     showFindBooks();
                                 }
-                            }, 1000);
+                            }, 500);
                             break;
                         case R.id.nav_author_info:
                             new Handler().postDelayed(new Runnable() {
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     showAuthorInfo();
                                 }
-                            }, 1000);
+                            }, 500);
                             break;
                         case R.id.nav_recent_reviews:
                             showRecentReviews();
