@@ -87,7 +87,12 @@ public class MainActivity extends AppCompatActivity {
                             }, 500);
                             break;
                         case R.id.nav_recent_reviews:
-                            showRecentReviews();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showRecentReviews();
+                                }
+                            }, 500);
                             break;
                     }
                 }
