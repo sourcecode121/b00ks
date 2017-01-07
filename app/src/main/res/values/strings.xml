@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">B00KS</string>
+    <string name="app_name">insight</string>
     <string name="api_key_string">@string/api_key</string>
 
     <string name="review_details_title">Review Details</string>
