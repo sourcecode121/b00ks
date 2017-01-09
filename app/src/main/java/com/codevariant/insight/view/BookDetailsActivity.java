@@ -125,6 +125,7 @@ public class BookDetailsActivity extends AppCompatActivity {
         bookDetailsContainer.setVisibility(View.GONE);
         progressLayout.setVisibility(View.VISIBLE);
         subscription = bookService.getBookInfo(bookId, key)
+                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<BookInfoResponse>() {

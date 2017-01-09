@@ -24,6 +24,8 @@
             android:layout_weight="5"
             android:hint="@string/author_info_name"
             android:inputType="text"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:imeOptions="actionDone"/>
 
         <Button

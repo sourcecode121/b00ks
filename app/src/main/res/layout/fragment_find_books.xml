@@ -22,6 +22,8 @@
             android:layout_weight="5"
             android:hint="@string/title_author_isbn"
             android:inputType="text"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:imeOptions="actionSearch"/>
 
         <Button

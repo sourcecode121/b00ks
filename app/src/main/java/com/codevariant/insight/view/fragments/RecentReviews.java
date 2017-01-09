@@ -136,6 +136,7 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
         booksRecyclerView.setVisibility(View.GONE);
         progressLayout.setVisibility(View.VISIBLE);
         subscription = bookService.getRecentReviews(key)
+                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<RecentReviewResponse>() {

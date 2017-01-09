@@ -172,7 +172,12 @@ public class FindBooks extends Fragment
             }
         }
         else {
-            findEditText.requestFocus();
+            findEditText.post(new Runnable() {
+                @Override
+                public void run() {
+                    findEditText.requestFocus();
+                }
+            });
             showKeyboard(getActivity());
         }
     }
@@ -205,6 +210,7 @@ public class FindBooks extends Fragment
             isListenerAttached = true;
         }
         subscription = bookService.findBooks(findText, String.valueOf(page), key, SEARCH_FIELD)
+                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FindBookResponse>() {

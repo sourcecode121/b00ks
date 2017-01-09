@@ -143,7 +143,12 @@ public class AuthorInfo extends Fragment {
             }
         }
         else {
-            findEditText.requestFocus();
+            findEditText.post(new Runnable() {
+                @Override
+                public void run() {
+                    findEditText.requestFocus();
+                }
+            });
             showKeyboard(getActivity());
         }
     }
@@ -169,6 +174,7 @@ public class AuthorInfo extends Fragment {
 
     private void connect() {
         subscription = bookService.findAuthor(findText, key)
+                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FindAuthorResponse>() {
@@ -200,6 +206,7 @@ public class AuthorInfo extends Fragment {
 
     private void getInfo() {
         subscription = bookService.getAuthorInfo(authorId, key)
+                .retry(2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<FindAuthorResponse>() {

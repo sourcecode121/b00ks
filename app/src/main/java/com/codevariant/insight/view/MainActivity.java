@@ -16,6 +16,7 @@ import com.codevariant.insight.view.fragments.AuthorInfo;
 import com.codevariant.insight.view.fragments.FindBooks;
 import com.codevariant.insight.view.fragments.Home;
 import com.codevariant.insight.view.fragments.RecentReviews;
+import com.google.firebase.crash.FirebaseCrash;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        FirebaseCrash.report(new Exception("My first Android non-fatal error"));
 
         ButterKnife.bind(this);
 
@@ -65,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
                     drawerLayout.closeDrawers();
                     switch (item.getItemId()) {
                         case R.id.nav_home:
-                            Home home =  new Home();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, home)
-                                    .commit();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showHome();
+                                }
+                            }, 200);
                             break;
                         case R.id.nav_find_books:
                             new Handler().postDelayed(new Runnable() {
@@ -99,6 +103,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void showHome() {
+        Home home =  new Home();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, home)
+                .commit();
     }
 
     private void showRecentReviews() {
