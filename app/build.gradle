@@ -18,6 +18,9 @@ android {
             properties.load(project.rootProject.file('env.properties').newDataInputStream())
             def apiKey = properties.getProperty('api.key')
             resValue "string", "api_key", apiKey
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true
