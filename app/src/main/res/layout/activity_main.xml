@@ -9,29 +9,7 @@
     android:fitsSystemWindows="true"
     tools:context="com.codevariant.insight.view.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextColor="@android:color/white"/>
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:animateLayoutChanges="true"/>
-
-    </LinearLayout>
+    <include layout="@layout/activity_main_content"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

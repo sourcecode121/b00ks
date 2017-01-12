@@ -146,7 +146,9 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
                         errorLayout.setVisibility(View.GONE);
                         booksRecyclerView.setVisibility(View.VISIBLE);
                         if (menuRefresh != null) {
-                            menuRefresh.getIcon().setTint(Color.WHITE);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                menuRefresh.getIcon().setTint(Color.WHITE);
+                            }
                             menuRefresh.setEnabled(true);
                         }
 
@@ -211,8 +213,10 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
                     item.getIcon().setTint(getResources().getColor(R.color.colorAccent, null));
                 }
                 else {
-                    //noinspection deprecation
-                    item.getIcon().setTint(getResources().getColor(R.color.colorAccent));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        //noinspection deprecation
+                        item.getIcon().setTint(getResources().getColor(R.color.colorAccent));
+                    }
                 }
                 item.setEnabled(false);
                 refreshRecycler();

@@ -16,7 +16,6 @@ import com.codevariant.insight.view.fragments.AuthorInfo;
 import com.codevariant.insight.view.fragments.FindBooks;
 import com.codevariant.insight.view.fragments.Home;
 import com.codevariant.insight.view.fragments.RecentReviews;
-import com.google.firebase.crash.FirebaseCrash;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -137,7 +137,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 hideKeyboard(this);
-                drawerLayout.openDrawer(GravityCompat.START);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawerLayout.openDrawer(GravityCompat.START);
+                    }
+                }, 300);
                 return true;
         }
         return super.onOptionsItemSelected(item);

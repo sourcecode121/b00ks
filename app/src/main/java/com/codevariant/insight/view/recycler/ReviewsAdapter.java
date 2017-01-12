@@ -46,6 +46,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.title.setMaxLines(1);
         holder.user.setText(recentReviewResponse.getReviews().get(position).getUser().getDisplayName());
         holder.title.setText(recentReviewResponse.getReviews().get(position).getBook().getTitle());
 
