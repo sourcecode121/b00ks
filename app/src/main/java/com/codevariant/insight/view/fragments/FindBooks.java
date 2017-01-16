@@ -76,6 +76,8 @@ public class FindBooks extends Fragment
     @BindView(R.id.default_layout)
     View defaultLayout;
 
+    public static final String TAG = FindBooks.class.getSimpleName();
+
     public static final String BOOK_DETAILS = "book_details";
     private static final String RECYCLER_STATE = "recycler_state";
     private static final String RECYCLER_STATE_LIST = "recycler_state_list";

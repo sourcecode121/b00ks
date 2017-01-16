@@ -34,7 +34,7 @@
     <string name="refresh">Refresh</string>
     <string name="recent_reviews">Recent Reviews</string>
     <string name="no_search_results">No Search Results</string>
-    <string name="author_info_name">Author\'s Fullname</string>
+    <string name="author_info_name">Author\'s Name</string>
     <string name="author_info">Author Info</string>
     <string name="info">Info</string>
 
@@ -42,8 +42,8 @@
     <string name="author_info_works_count">&lt;b>Works Count:&lt;/b> %s</string>
     <string name="author_info_gender">&lt;b>Gender:&lt;/b> %s</string>
     <string name="author_info_hometown">&lt;b>Hometown:&lt;/b> %s</string>
-    <string name="author_info_born_at">&lt;b>Born At:&lt;/b> %s</string>
-    <string name="author_info_died_at">&lt;b>Died At:&lt;/b> %s</string>
+    <string name="author_info_born_at">&lt;b>Born:&lt;/b> %s</string>
+    <string name="author_info_died_at">&lt;b>Died:&lt;/b> %s</string>
     <string name="powered_by">powered by</string>
     <string name="home_find_books_desc">Search for any book using Title / Author / ISBN</string>
     <string name="home_author_info_desc">Everything you need to know about your favourite author</string>

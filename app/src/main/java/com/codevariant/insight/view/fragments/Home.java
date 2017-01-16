@@ -27,6 +27,8 @@ public class Home extends Fragment {
     @BindView(R.id.home_recent_reviews)
     CardView recentReviews;
 
+    public static final String TAG = Home.class.getSimpleName();
+
     private NavigationView navigationView;
 
     @Nullable
@@ -50,7 +52,7 @@ public class Home extends Fragment {
                 navigationView.setCheckedItem(R.id.nav_find_books);
                 FindBooks findBooks = new FindBooks();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, findBooks)
+                        .replace(R.id.fragment_container, findBooks, FindBooks.TAG)
                         .commit();
             }
         });
@@ -61,7 +63,7 @@ public class Home extends Fragment {
                 navigationView.setCheckedItem(R.id.nav_author_info);
                 AuthorInfo authorInfo = new AuthorInfo();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, authorInfo)
+                        .replace(R.id.fragment_container, authorInfo, AuthorInfo.TAG)
                         .commit();
             }
         });
@@ -72,7 +74,7 @@ public class Home extends Fragment {
                 navigationView.setCheckedItem(R.id.nav_recent_reviews);
                 RecentReviews recentReviews = new RecentReviews();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, recentReviews)
+                        .replace(R.id.fragment_container, recentReviews, RecentReviews.TAG)
                         .commit();
             }
         });

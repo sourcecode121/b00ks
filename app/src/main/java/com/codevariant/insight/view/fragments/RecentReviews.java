@@ -56,6 +56,8 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     @BindView(R.id.progress_layout)
     View progressLayout;
 
+    public static final String TAG = RecentReviews.class.getSimpleName();
+
     public static final String DETAILS = "details";
     private static final String RECYCLER_STATE = "recycler_state";
     private static final String RECYCLER_STATE_RESPONSE = "recycler_state_response";

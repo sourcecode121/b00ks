@@ -2,6 +2,7 @@ package com.codevariant.insight.model.findAuthor;
 
 import org.simpleframework.xml.Default;
 import org.simpleframework.xml.DefaultType;
+import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 /**
@@ -14,10 +15,12 @@ public class FindAuthorResponse {
 
     private Author author;
 
+    @Element(required = false)
     public Author getAuthor() {
         return author;
     }
 
+    @Element(required = false)
     public void setAuthor(Author author) {
         this.author = author;
     }

@@ -70,6 +70,8 @@ public class AuthorInfo extends Fragment {
     @BindView(R.id.details_image) ImageView detailsImage;
     @BindView(R.id.details_title) TextView detailsTitle;
 
+    public static final String TAG = AuthorInfo.class.getSimpleName();
+
     private static final String AUTHOR = "author";
     private static final String FIND_TEXT = "find_text";
     private static final String SCREEN_STATE = "screen_state";
@@ -161,6 +163,7 @@ public class AuthorInfo extends Fragment {
         else {
             hideKeyboard(getActivity());
             findText = findEditText.getText().toString().trim();
+            authorId = null;
             showProgressLayout();
             connect();
         }
@@ -199,7 +202,9 @@ public class AuthorInfo extends Fragment {
 
                     @Override
                     public void onNext(FindAuthorResponse findAuthorResponse) {
-                        authorId = findAuthorResponse.getAuthor().getId();
+                        if (findAuthorResponse.getAuthor() != null) {
+                            authorId = findAuthorResponse.getAuthor().getId();
+                        }
                     }
                 });
     }

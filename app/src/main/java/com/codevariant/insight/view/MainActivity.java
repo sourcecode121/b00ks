@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Home home =  new Home();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, home)
+                    .add(R.id.fragment_container, home, Home.TAG)
                     .commit();
         }
     }
@@ -107,28 +108,28 @@ public class MainActivity extends AppCompatActivity {
     private void showHome() {
         Home home =  new Home();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, home)
+                .replace(R.id.fragment_container, home, Home.TAG)
                 .commit();
     }
 
     private void showRecentReviews() {
         RecentReviews recentReviews = new RecentReviews();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, recentReviews)
+                .replace(R.id.fragment_container, recentReviews, RecentReviews.TAG)
                 .commit();
     }
 
     private void showAuthorInfo() {
         AuthorInfo authorInfo = new AuthorInfo();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, authorInfo)
+                .replace(R.id.fragment_container, authorInfo, AuthorInfo.TAG)
                 .commit();
     }
 
     private void showFindBooks() {
         FindBooks findBooks = new FindBooks();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, findBooks)
+                .replace(R.id.fragment_container, findBooks, FindBooks.TAG)
                 .commit();
     }
 
@@ -146,5 +147,22 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        }
+        else {
+            Fragment homeFragment = getSupportFragmentManager().findFragmentByTag(Home.TAG);
+            if (homeFragment != null) {
+                super.onBackPressed();
+            }
+            else {
+                navigationView.setCheckedItem(R.id.nav_home);
+                showHome();
+            }
+        }
     }
 }
