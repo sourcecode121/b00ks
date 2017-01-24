@@ -49,4 +49,5 @@
     <string name="home_author_info_desc">Everything you need to know about your favourite author</string>
     <string name="home_recent_reviews_desc">See the latest reviews from goodreads</string>
     <string name="home">Home</string>
+    <string name="card_transition">card</string>
 </resources>

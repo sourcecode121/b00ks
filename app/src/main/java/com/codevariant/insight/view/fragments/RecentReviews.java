@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -188,7 +189,13 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(DETAILS, Parcels.wrap(recentReviewResponse.getReviews().get(position)));
-        startActivity(intent);
+
+        String cardTransition = context.getString(R.string.card_transition);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(), view, cardTransition
+        );
+
+        startActivity(intent, options.toBundle());
     }
 
     public void refreshRecycler() {
