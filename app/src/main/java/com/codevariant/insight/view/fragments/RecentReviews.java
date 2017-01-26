@@ -9,8 +9,11 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -185,14 +188,20 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
         super.onDestroyView();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onItemClick(View view, int position) {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(DETAILS, Parcels.wrap(recentReviewResponse.getReviews().get(position)));
 
         String cardTransition = context.getString(R.string.card_transition);
+        String toolbarTransition = context.getString(R.string.toolbar_transition_name);
+        View toolbar = getActivity().findViewById(R.id.toolbar);
+
+        Pair<View, String> p1 = Pair.create(toolbar, toolbarTransition);
+        Pair<View, String> p2 = Pair.create(view, cardTransition);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(), view, cardTransition
+                getActivity(), p1, p2
         );
 
         startActivity(intent, options.toBundle());

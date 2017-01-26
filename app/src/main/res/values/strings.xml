@@ -50,4 +50,5 @@
     <string name="home_recent_reviews_desc">See the latest reviews from goodreads</string>
     <string name="home">Home</string>
     <string name="card_transition">card</string>
+    <string name="toolbar_transition_name">toolbar</string>
 </resources>
