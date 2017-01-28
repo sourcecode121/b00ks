@@ -264,6 +264,7 @@ public class AuthorInfo extends Fragment {
                 .load(author.getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .into(detailsImage);
+        detailsTitle.setPadding(20, 0, 0, 0);
         detailsTitle.setText(author.getName());
 
         if (author.getAbout() == null || author.getAbout().trim().equals("")) {

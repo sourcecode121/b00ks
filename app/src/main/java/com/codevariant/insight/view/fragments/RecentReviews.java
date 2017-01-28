@@ -12,8 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -194,7 +192,7 @@ public class RecentReviews extends Fragment implements OnItemClickListener {
         Intent intent = new Intent(context, DetailsActivity.class);
         intent.putExtra(DETAILS, Parcels.wrap(recentReviewResponse.getReviews().get(position)));
 
-        String cardTransition = context.getString(R.string.card_transition);
+        String cardTransition = context.getString(R.string.card_transition_name);
         String toolbarTransition = context.getString(R.string.toolbar_transition_name);
         View toolbar = getActivity().findViewById(R.id.toolbar);
 

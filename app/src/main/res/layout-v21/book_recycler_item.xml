@@ -13,7 +13,7 @@
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:stateListAnimator="@animator/elevation"
-    android:transitionName="@string/card_transition"
+    android:transitionName="@string/card_transition_name"
     app:contentPadding="8dp"
     app:cardElevation="2dp">
 

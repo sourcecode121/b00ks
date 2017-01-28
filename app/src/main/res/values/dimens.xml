@@ -6,4 +6,5 @@
     <dimen name="button_corner_radius">8dp</dimen>
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="details_header_height">100dp</dimen>
+    <dimen name="home_card_padding">0dp</dimen>
 </resources>
