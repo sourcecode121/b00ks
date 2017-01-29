@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="CardTitle" parent="Base.TextAppearance.AppCompat.Large">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CardDescription" parent="Base.TextAppearance.AppCompat.Medium"/>
+
+</resources>

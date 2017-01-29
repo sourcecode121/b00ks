@@ -19,4 +19,10 @@
 
     <style name="DefaultAppTheme" parent="Base.DefaultAppTheme"/>
 
+    <style name="CardTitle" parent="Base.TextAppearance.AppCompat.Medium">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CardDescription" parent="Base.TextAppearance.AppCompat.Small"/>
+
 </resources>
