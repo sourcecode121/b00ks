@@ -17,6 +17,7 @@ public class Book {
 
     private String description;
     private String link;
+    private String numPages;
 
     @Element(required = false)
     public String getDescription() {
@@ -34,5 +35,15 @@ public class Book {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    @Element(name = "num_pages", required = false)
+    public String getNumPages() {
+        return numPages;
+    }
+
+    @Element(name = "num_pages", required = false)
+    public void setNumPages(String numPages) {
+        this.numPages = numPages;
     }
 }

@@ -58,6 +58,8 @@ public class BookDetailsActivity extends AppCompatActivity {
     TextView title;
     @BindView(R.id.details_name)
     TextView author;
+    @BindView(R.id.book_details_num_pages)
+    TextView pageCount;
     @BindView(R.id.book_details_publication_date)
     TextView publicationDate;
     @BindView(R.id.book_details_average_rating)
@@ -193,6 +195,12 @@ public class BookDetailsActivity extends AppCompatActivity {
         }
 
         if (book != null) {
+            if (book.getNumPages() == null || book.getNumPages().trim().equals("")) {
+                pageCount.setVisibility(View.GONE);
+            }
+            else {
+                pageCount.setText(applyHtmlTags(resources.getString(R.string.num_pages, book.getNumPages().trim())));
+            }
             if (book.getDescription() == null || book.getDescription().trim().equals("")) {
                 description.setVisibility(View.GONE);
             }
@@ -201,6 +209,10 @@ public class BookDetailsActivity extends AppCompatActivity {
                 description.setText(applyHtmlTags(resources.getString(R.string.book_description)));
                 description.append(str);
             }
+        }
+        else {
+            pageCount.setVisibility(View.GONE);
+            description.setVisibility(View.GONE);
         }
 
         averageRating.setText(applyHtmlTags(resources.getString(R.string.book_average_rating, work.getAverageRating())));

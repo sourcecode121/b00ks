@@ -16,6 +16,12 @@
         <include layout="@layout/details_header"/>
 
         <TextView
+            android:id="@+id/book_details_num_pages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_margin"/>
+
+        <TextView
             android:id="@+id/book_details_publication_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
